@@ -4,14 +4,13 @@ class Puerta extends THREE.Object3D {
 	constructor() {
 		super();
 
-		var geometria_puerta = new THREE.BoxGeometry(0.3, 20, 10);
+		var geometria_puerta = new THREE.BoxGeometry(1, 20, 10);
 		geometria_puerta.translate(0, 20 / 2, 0);
 		var material_puerta = new THREE.MeshPhongMaterial({ color: 0x808080 });
-
 		this.puerta = new THREE.Mesh(geometria_puerta, material_puerta);
 		this.add(this.puerta);
 
-		var geometria_pomo = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 20);
+		var geometria_pomo = new THREE.CylinderGeometry(0.5, 0.5, 1.5, 20);
 		geometria_pomo.rotateZ(Math.PI / 2);
 		geometria_pomo.translate(0, 0.5 / 2, 0);
 		var material_pomo = new THREE.MeshPhongMaterial({ color: 0x000000 });

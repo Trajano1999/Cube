@@ -12,6 +12,7 @@ import { Paredes } from './Paredes.js'
 import { Cubos } from './Cubos.js'
 import { Puerta } from './Puerta.js'
 import { Cajonera } from './Cajonera.js'
+import { Mosca } from './Mosca.js'
 
 // ─── Clase Escena ───────────────────────────────────────────────────────────
 
@@ -58,6 +59,9 @@ class MyScene extends THREE.Scene {
 		this.cajonera = new Cajonera();
 		this.cajonera.position.set(15, 0, -30);
 		this.add(this.cajonera);
+
+		this.mosca = new Mosca();
+		this.add(this.mosca);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -101,7 +105,7 @@ class MyScene extends THREE.Scene {
 		this.cameraControl.panSpeed = 0.5;
 		// Debe orbitar con respecto al punto de mira de la cámara
 		this.posicion_camara = new THREE.Vector3(30, 10, 30);
-		this.cameraControl.target = this.posicion_camara;
+		this.cameraControl.target = look;
 	}
 
 	// ─── Gestor Tecla Presionada ────────────────────────────────────────────
@@ -266,8 +270,8 @@ class MyScene extends THREE.Scene {
 		this.cameraControl.update();
 
 		// Se actualiza el resto del modelo
-		//this.model.update();
-
+		this.mosca.update();
+		
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render(this, this.getCamera());
 

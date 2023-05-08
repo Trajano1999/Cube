@@ -3,39 +3,36 @@ import * as THREE from '../libs/three.module.js'
 class Paredes extends THREE.Object3D {
 	constructor() {
 		super();
-		this.dimensiones = 75;
 
-		this.add(this.createEstructura());
-	}
+		// variables
+		this.dimension_suelo = 75;
+		this.dimension_pared = 50;
 
-	createEstructura() {
-		// El suelo es un Mesh, necesita una geometría y un material.
-		// La geometría es una caja con muy poca altura
-		var geometry = new THREE.BoxGeometry(this.dimensiones, 0.2, this.dimensiones);
-		geometry.translate(0, -0.1, 0);
-
-		// El material se hará con una textura de madera
+		// creamos el suelo y techo
+		var geometry_suelo = new THREE.BoxGeometry(this.dimension_suelo, 0.2, this.dimension_suelo);
+		geometry_suelo.translate(0, -0.1, 0);
 		var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
 		var material = new THREE.MeshPhongMaterial({ map: texture });
+		var suelo = new THREE.Mesh(geometry_suelo, material);
+		var techo = suelo.clone();
+		techo.position.set(0, 50, 0);
 
-		// Ya se puede construir el Mesh
-		var suelo = new THREE.Mesh(geometry, material);
-		var pared_izq = suelo.clone();
-		var pared_der = suelo.clone();
-		var pared_trasera = suelo.clone();
+		// construimos las paredes
+		var geometry_paredes = new THREE.BoxGeometry(this.dimension_suelo, 0.2, this.dimension_pared);
+		var pared_izq = new THREE.Mesh(geometry_paredes, material);
+		var pared_der = pared_izq.clone();
+		var pared_trasera = pared_izq.clone();
 
 		pared_izq.rotation.z = -Math.PI / 2;
-		pared_izq.position.set(-this.dimensiones / 2, this.dimensiones / 2, 0);
+		pared_izq.rotation.x = -Math.PI / 2;
+		pared_izq.position.set(-this.dimension_suelo / 2, this.dimension_pared / 2, 0);
 
 		pared_der.rotation.z = Math.PI / 2;
-		pared_der.position.set(this.dimensiones / 2, this.dimensiones / 2, 0);
+		pared_der.rotation.x = -Math.PI / 2;
+		pared_der.position.set(this.dimension_suelo / 2, this.dimension_pared / 2, 0);
 
 		pared_trasera.rotation.x = Math.PI / 2;
-		pared_trasera.position.set(0, this.dimensiones / 2, -this.dimensiones / 2);
-
-
-		// Todas las figuras se crean centradas en el origen.
-		// El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
+		pared_trasera.position.set(0, this.dimension_pared / 2, -this.dimension_suelo / 2);
 
 		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
 		var estructura = new THREE.Object3D();
@@ -43,8 +40,8 @@ class Paredes extends THREE.Object3D {
 		estructura.add(pared_izq);
 		estructura.add(pared_der);
 		estructura.add(pared_trasera);
-
-		return estructura;
+		estructura.add(techo);
+		this.add(estructura);
 	}
 
 	update() { }
