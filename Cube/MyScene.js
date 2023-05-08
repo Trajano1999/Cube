@@ -68,7 +68,6 @@ class MyScene extends THREE.Scene {
 
 	initStats() {
 		var stats = new Stats();
-
 		stats.setMode(0); // 0: fps, 1: ms
 
 		// Align top-left
@@ -114,16 +113,20 @@ class MyScene extends THREE.Scene {
 		var tecla = event.wich || event.keyCode;
 		switch (tecla) {
 			case 38: case 87: // Flecha arriba
-				this.camera.position.z -= 1;
+				if (this.camera.position.z > -37)
+					this.camera.position.z -= 1;
 				break;
 			case 40: case 83: // Flecha abajo
-				this.camera.position.z += 1;
+				if (this.camera.position.z < 37)
+					this.camera.position.z += 1;
 				break;
 			case 37: case 65: // Flecha izquierda
-				this.camera.position.x -= 1;
+				if (this.camera.position.x > -37)
+					this.camera.position.x -= 1;
 				break;
 			case 39: case 68: // Flecha derecha
-				this.camera.position.x += 1;
+				if (this.camera.position.x < 37)
+					this.camera.position.x += 1;
 				break;
 		}
 		this.posicion_camara.x = this.camera.position.x;
@@ -271,7 +274,7 @@ class MyScene extends THREE.Scene {
 
 		// Se actualiza el resto del modelo
 		this.mosca.update();
-		
+
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render(this, this.getCamera());
 

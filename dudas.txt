@@ -1,0 +1,10 @@
+Movimiento de la cámara en escena. ¿La que tenemos o cámara alternativa?
+	this.cameraControl.target = this.posicion_camara;
+
+
+Falta por hacer :
+	- Última pared
+	- Botones de pared
+	- Luces techo
+	- Reloj pared
+	- Pruebas
