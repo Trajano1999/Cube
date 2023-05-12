@@ -72,11 +72,11 @@ class MyScene extends THREE.Scene {
 		this.add(this.mosca);
 
 		this.boton = new Boton();
-		this.boton.position.set(-75/2, 30, 0);
+		this.boton.position.set(-75 / 2, 30, 0);
 		this.add(this.boton);
 
 		this.reloj = new Reloj();
-		this.reloj.position.set(0, 20, -75/2+0.1+4);
+		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
 	}
 
@@ -164,7 +164,7 @@ class MyScene extends THREE.Scene {
 		this.pickedBoton = this.raycaster.intersectObjects(this.boton.getPickableObjects(), true);
 		this.pickedObjects_cubos = this.raycaster.intersectObjects(this.cubos.getPickableObjects(), true);
 
-		if(this.pickedObjects_cubos.length > 0 ){
+		if (this.pickedObjects_cubos.length > 0) {
 			this.cubos_seleccionados = true;
 			//console.log("Has clickado en un cubo");
 			console.log("Has clickado en el cubo con identificador: " + this.pickedObjects_cubos[0].object.userData.getIdCubo());
@@ -173,47 +173,40 @@ class MyScene extends THREE.Scene {
 			this.cubo_seleccionado = this.pickedObjects_cubos[0].object.userData;
 		}
 
-		if(this.pickedBoton.length > 0){
+		if (this.pickedBoton.length > 0) {
 			this.boton_pulsado = true;
 			this.contador_boton += 1;
 			console.log("Boton pulsado " + this.contador_boton + " veces");
 		}
 	}
 
-	
-
 	onMouseMove(event) {
-
-		if(this.cubos_seleccionados){
+		if (this.cubos_seleccionados) {
 			// Calcula la posición del ratón en la ventana
 			const mouseX = event.clientX;
 			const mouseY = event.clientY;
-	  
-			  
+
 			// Calcula el desplazamiento del ratón desde la última posición
 			var deltaX = mouseX - this.mouseX;
 			var deltaY = mouseY - this.mouseY;
 
-			deltaX = deltaX/30;
-			deltaY = deltaY/30;
-	  
+			deltaX = deltaX / 30;
+			deltaY = deltaY / 30;
+
 			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón
 			this.cubo_seleccionado.position.x += deltaX;
 			this.cubo_seleccionado.position.z += deltaY;
 
 			//Actualizamos la caja englobante
 			//this.cubo_seleccionado.getBoundingBox().setFromObject(this.cubo_seleccionado);
-			
-	  
+
 			// Actualiza la posición del ratón
 			this.mouseX = mouseX;
 			this.mouseY = mouseY;
-
 		}
 	}
 
-
-	onMouseUp(event){
+	onMouseUp(event) {
 		if (this.cubos_seleccionados) {
 			this.cubos_seleccionados = false;
 		}
@@ -361,7 +354,7 @@ class MyScene extends THREE.Scene {
 		// Se actualiza el resto del modelo
 		this.mosca.update();
 		this.reloj.update();
-		if(this.cubos_seleccionados)
+		if (this.cubos_seleccionados)
 			this.cubos.update();
 
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
@@ -388,7 +381,6 @@ $(function () {
 	window.addEventListener("mousedown", (event) => scene.onMouseDown(event), true);
 	window.addEventListener("mousemove", (event) => scene.onMouseMove(event), true);
 	window.addEventListener("mouseup", (event) => scene.onMouseUp(event), true);
-
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();

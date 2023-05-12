@@ -1,12 +1,11 @@
-Movimiento de la cámara en escena. ¿La que tenemos o cámara alternativa?
-	this.cameraControl.target = this.posicion_camara;
-	
-Arrastrar los cubos: al arrastrar también se mueve la camara y los cubos no se arrastran bien, de hecho no se como arrastrarlos en z
-
-
 Falta por hacer :
 	- Última pared
-	- Botones de pared
-	- Luces techo
-	- Reloj pared
 	- Pruebas
+	- Boton luces
+	- Luces techo
+
+	Juanma
+	- Cámara
+	- Cuerpo Reloj
+	- Textura coca cola
+	- Estanteria cajón y llave

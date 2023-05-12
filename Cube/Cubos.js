@@ -11,7 +11,6 @@ class Cubos extends THREE.Object3D {
 		var material1 = new THREE.MeshPhongMaterial({ color: 0xff0000 });	//cubo rojo
 		var material2 = new THREE.MeshPhongMaterial({ color: 0x00ff00 });	//cubo verde
 		var material3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });	//cubo azul
-		
 
 		this.cubo1 = new Cubo(1, material1);
 		this.cubo2 = new Cubo(2, material2);
@@ -28,26 +27,11 @@ class Cubos extends THREE.Object3D {
 		this.add(this.cubo1);
 		this.add(this.cubo2);
 		this.add(this.cubo3);
-
-
 	}
 
-	update() { 
-		/*
-		if (this.cubo1.getBoundingBox().intersectsBox(this.cubo2.getBoundingBox())) {
-			this.cubo1.position.y = this.cubo2.position.y + this.dimension;
-		}
-		if (this.cubo1.getBoundingBox().intersectsBox(this.cubo3.getBoundingBox())) {
-			this.cubo1.position.y = this.cubo3.position.y + this.dimension;
-		}
-		if (this.cubo2.getBoundingBox().intersectsBox(this.cubo3.getBoundingBox())) {
-			this.cubo2.position.y = this.cubo3.position.y + this.dimension;
-		}*/
-		
+	update() { }
 
-	}
-
-	getPickableObjects(){
+	getPickableObjects() {
 		return this.pickableObjects;
 	}
 }
@@ -55,7 +39,7 @@ class Cubos extends THREE.Object3D {
 class Cubo extends THREE.Object3D {
 	constructor(id_cubo, material) {
 		super();
-		
+
 		var dimension = 3;
 
 		this.identificador_cubo = id_cubo;
@@ -72,14 +56,13 @@ class Cubo extends THREE.Object3D {
 		this.cajaVisible = new THREE.Box3Helper(this.bounding_box, 0xFFFFFF);
 		this.cajaVisible.visible = true;
 		this.add(this.cajaVisible);*/
-
 	}
 
-	getIdCubo(){
+	getIdCubo() {
 		return this.identificador_cubo;
 	}
 
-	getBoundingBox(){
+	getBoundingBox() {
 		//return this.bounding_box;
 	}
 }
