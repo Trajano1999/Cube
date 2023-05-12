@@ -13,12 +13,20 @@ import { Cubos } from './Cubos.js'
 import { Puerta } from './Puerta.js'
 import { Cajonera } from './Cajonera.js'
 import { Mosca } from './Mosca.js'
+import { Boton } from './Boton.js'
+import { Reloj } from './Reloj.js'
 
 // ─── Clase Escena ───────────────────────────────────────────────────────────
 
 class MyScene extends THREE.Scene {
 	constructor(myCanvas) {
 		super();
+		this.cubos_seleccionados = false;
+		this.boton_pulsado = false;
+		this.contador_boton = 0;
+
+		//this.mouse = new THREE.Vector2();
+		this.raycaster = new THREE.Raycaster();
 
 		// Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
 		this.renderer = this.createRenderer(myCanvas);
@@ -57,11 +65,19 @@ class MyScene extends THREE.Scene {
 		this.add(this.puerta);
 
 		this.cajonera = new Cajonera();
-		this.cajonera.position.set(15, 0, -30);
+		this.cajonera.position.set(25, 0, -30);
 		this.add(this.cajonera);
 
 		this.mosca = new Mosca();
 		this.add(this.mosca);
+
+		this.boton = new Boton();
+		this.boton.position.set(-75/2, 30, 0);
+		this.add(this.boton);
+
+		this.reloj = new Reloj();
+		this.reloj.position.set(0, 20, -75/2+0.1+4);
+		this.add(this.reloj);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -104,7 +120,8 @@ class MyScene extends THREE.Scene {
 		this.cameraControl.panSpeed = 0.5;
 		// Debe orbitar con respecto al punto de mira de la cámara
 		this.posicion_camara = new THREE.Vector3(30, 10, 30);
-		this.cameraControl.target = look;
+		this.cameraControl.target = this.posicion_camara;
+		//this.cameraControl.target = look;
 	}
 
 	// ─── Gestor Tecla Presionada ────────────────────────────────────────────
@@ -131,6 +148,75 @@ class MyScene extends THREE.Scene {
 		}
 		this.posicion_camara.x = this.camera.position.x;
 		this.posicion_camara.z = this.camera.position.z;
+	}
+
+	// ─── Gestor del Ratón  ─────────────────────────────────────────────
+
+	onMouseDown(event) {
+		//var mouse = new THREE.Vector2();
+		var mouse = new THREE.Vector2();
+		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+		mouse.y = 1 - 2 * (event.clientY / window.innerHeight);
+
+		//var raycaster = new THREE.Raycaster();
+		this.raycaster.setFromCamera(mouse, this.camera);
+
+		this.pickedBoton = this.raycaster.intersectObjects(this.boton.getPickableObjects(), true);
+		this.pickedObjects_cubos = this.raycaster.intersectObjects(this.cubos.getPickableObjects(), true);
+
+		if(this.pickedObjects_cubos.length > 0 ){
+			this.cubos_seleccionados = true;
+			//console.log("Has clickado en un cubo");
+			console.log("Has clickado en el cubo con identificador: " + this.pickedObjects_cubos[0].object.userData.getIdCubo());
+			this.mouseX = event.clientX;
+			this.mouseY = event.clientY;
+			this.cubo_seleccionado = this.pickedObjects_cubos[0].object.userData;
+		}
+
+		if(this.pickedBoton.length > 0){
+			this.boton_pulsado = true;
+			this.contador_boton += 1;
+			console.log("Boton pulsado " + this.contador_boton + " veces");
+		}
+	}
+
+	
+
+	onMouseMove(event) {
+
+		if(this.cubos_seleccionados){
+			// Calcula la posición del ratón en la ventana
+			const mouseX = event.clientX;
+			const mouseY = event.clientY;
+	  
+			  
+			// Calcula el desplazamiento del ratón desde la última posición
+			var deltaX = mouseX - this.mouseX;
+			var deltaY = mouseY - this.mouseY;
+
+			deltaX = deltaX/30;
+			deltaY = deltaY/30;
+	  
+			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón
+			this.cubo_seleccionado.position.x += deltaX;
+			this.cubo_seleccionado.position.z += deltaY;
+
+			//Actualizamos la caja englobante
+			//this.cubo_seleccionado.getBoundingBox().setFromObject(this.cubo_seleccionado);
+			
+	  
+			// Actualiza la posición del ratón
+			this.mouseX = mouseX;
+			this.mouseY = mouseY;
+
+		}
+	}
+
+
+	onMouseUp(event){
+		if (this.cubos_seleccionados) {
+			this.cubos_seleccionados = false;
+		}
 	}
 
 	// ─── Gestor Tecla Levantada ─────────────────────────────────────────────
@@ -274,6 +360,9 @@ class MyScene extends THREE.Scene {
 
 		// Se actualiza el resto del modelo
 		this.mosca.update();
+		this.reloj.update();
+		if(this.cubos_seleccionados)
+			this.cubos.update();
 
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render(this, this.getCamera());
@@ -294,6 +383,12 @@ $(function () {
 	// Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
 	window.addEventListener("resize", () => scene.onWindowResize());
 	window.addEventListener("keydown", (event) => scene.onKeyDown(event), true);
+
+	//Añadimos ahora lo listeners que nos van a permitir superar las pruebas del scaperoom.
+	window.addEventListener("mousedown", (event) => scene.onMouseDown(event), true);
+	window.addEventListener("mousemove", (event) => scene.onMouseMove(event), true);
+	window.addEventListener("mouseup", (event) => scene.onMouseUp(event), true);
+
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();

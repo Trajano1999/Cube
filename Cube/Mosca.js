@@ -7,13 +7,6 @@ class Mosca extends THREE.Object3D {
     constructor() {
         super();
 
-        // creamos la figura
-        /*var geometria = new THREE.ConeGeometry(0.4, 1.5, 3);
-        geometria.rotateX(Math.PI / 2);
-        var material = new THREE.MeshNormalMaterial();
-        this.model = new THREE.Mesh(geometria, material);
-        this.add(this.model);*/
-
         // cargamos la mosca
         var file = '../models/mosca/mosca.mtl';
         var objeto = '../models/mosca/mosca.obj';
@@ -25,12 +18,12 @@ class Mosca extends THREE.Object3D {
         materialLoader.load(file, (materials) => {
             objectLoader.setMaterials(materials);
             objectLoader.load(objeto, (object) => {
-                    this.mosca.add(object);
-                }, null, null);
+                this.mosca.add(object);
+            }, null, null);
         });
-        this.add(this.mosca)
 
-        this.mosca.scale.set(0.1, 0.1, 0.1);
+        this.add(this.mosca);
+        this.mosca.scale.set(0.4, 0.4, 0.4);
 
         // aplicamos recorrido y animación
         this.recorrido();
@@ -40,19 +33,23 @@ class Mosca extends THREE.Object3D {
     recorrido() {
         // construimos los dos caminos con puntos clave
         this.spline = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(0, 28, 0),
-            new THREE.Vector3(-7, 27, 4),
-            new THREE.Vector3(-8, 28, -2),
-            new THREE.Vector3(0, 27, 0),
-            new THREE.Vector3(6, 26, 2),
-            new THREE.Vector3(10, 29, -2),
-            new THREE.Vector3(0, 28, 0),
+            new THREE.Vector3(20, 32, -20),
+            new THREE.Vector3(-30, 35, -20),
+            new THREE.Vector3(-15, 34, 10),
+            new THREE.Vector3(-10, 36, 0),
+            new THREE.Vector3(-15, 34, -10),
+            new THREE.Vector3(-30, 35, 20),
+            new THREE.Vector3(30, 32, 30),
+            new THREE.Vector3(35, 30, 20),
+            new THREE.Vector3(10, 32, 0),
+            new THREE.Vector3(35, 30, -18),
+            new THREE.Vector3(20, 32, -20),
         ]);
 
         // definimos los recorridos
         var geometryLine = new THREE.BufferGeometry();
         geometryLine.setFromPoints(this.spline.getPoints(100));
-        var materialLine = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        var materialLine = new THREE.LineBasicMaterial({ color: 0x000000 });
 
         // visualizamos el recorrido
         var visibleSpline = new THREE.Line(geometryLine, materialLine);
@@ -63,7 +60,7 @@ class Mosca extends THREE.Object3D {
         // definimos el primer movimiento
         var origen = { t: 0 };
         var destino = { t: 1 };
-        var tiempoRecorrido = 10 * 1000;
+        var tiempoRecorrido = 20 * 1000;
 
         var movimiento = new TWEEN.Tween(origen)
             .to(destino, tiempoRecorrido)

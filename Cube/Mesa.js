@@ -167,7 +167,11 @@ class Lata extends THREE.Object3D {
 
 
 		var miObjeto = new THREE.LatheGeometry(points, 50, 0, 2 * Math.PI);
-		var miMaterial = new THREE.MeshNormalMaterial();
+		//var miMaterial = new THREE.MeshNormalMaterial();
+		var loader = new THREE.TextureLoader();
+		var textura_reloj = loader.load('../imgs/lata-coke.jpg');
+		var miMaterial = new THREE.MeshPhongMaterial({map:textura_reloj});
+
 		miMaterial.side = THREE.DoubleSide;
 		miMaterial.flatShading = true;
 		miMaterial.needsUpdate = true;

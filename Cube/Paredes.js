@@ -11,7 +11,7 @@ class Paredes extends THREE.Object3D {
 		// creamos el suelo y techo
 		var geometry_suelo = new THREE.BoxGeometry(this.dimension_suelo, 0.2, this.dimension_suelo);
 		geometry_suelo.translate(0, -0.1, 0);
-		var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
+		var texture = new THREE.TextureLoader().load('../imgs/estuco.jpg');
 		var material = new THREE.MeshPhongMaterial({ map: texture });
 		var suelo = new THREE.Mesh(geometry_suelo, material);
 		var techo = suelo.clone();
