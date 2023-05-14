@@ -2,8 +2,8 @@
 
 import * as THREE from '../libs/three.module.js'
 import { GUI } from '../libs/dat.gui.module.js'
-import { TrackballControls } from '../libs/TrackballControls.js'
 import { Stats } from '../libs/stats.module.js'
+import { PointerLockControls } from './CamaraPP.js'
 
 // Clases de mi proyecto
 
@@ -63,7 +63,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.puerta);
 
 		this.cajonera = new Cajonera();
-		this.cajonera.position.set(25, 0, -30);
+		this.cajonera.position.set(25, 0, -33.5);
 		this.add(this.cajonera);
 
 		this.mosca = new Mosca();
@@ -103,21 +103,26 @@ class MyScene extends THREE.Scene {
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, 0.1, 1000);
 		// posición de la cámara
-		this.camera.position.set(32, 10, 36);
-
+		this.camera.position.set(32, 10, 34);
 		// apuntamos la cámara al centro
 		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 		// añadimos la cámara
 		this.add(this.camera);
 
 		// Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
-		this.cameraControl = new TrackballControls(this.camera, this.renderer.domElement);
-		// Se configuran las velocidades de los movimientos
-		/*this.cameraControl.rotateSpeed = 5;
-		this.cameraControl.zoomSpeed = -2;
-		this.cameraControl.panSpeed = 0.5;*/
-		// Debe orbitar con respecto al punto de mira de la cámara
-		//this.cameraControl.target = look;
+		this.cameraControl = new PointerLockControls(this.camera, this.renderer.domElement);
+		this.cameraControl.lock();
+	}
+
+	// ─── Gestor Espacio ──────────────────────────────────────────────────────
+
+	testColision(donde_estoy, a_donde_miro) {
+		var bool = false;
+		/*if (posicion.z > -37 && posicion.z < 37 && posicion.x > -37 && posicion.x < 37) {
+			bool = true;
+		}*/
+
+		return bool;
 	}
 
 	// ─── Gestor Teclas ──────────────────────────────────────────────────────
@@ -126,41 +131,43 @@ class MyScene extends THREE.Scene {
 		var tecla = event.wich || event.keyCode;
 		switch (tecla) {
 			case 38: case 87: // Flecha arriba
-				if (this.camera.position.z > -37)
-					this.camera.position.z -= 1;
+				this.adelante = true;
 				break;
 			case 40: case 83: // Flecha abajo
-				if (this.camera.position.z < 37)
-					this.camera.position.z += 1;
+				this.atras = true;
 				break;
 			case 37: case 65: // Flecha izquierda
-				if (this.camera.position.x > -37)
-					this.camera.position.x -= 1;
+				this.izq = true;
 				break;
 			case 39: case 68: // Flecha derecha
-				if (this.camera.position.x < 37)
-					this.camera.position.x += 1;
+				this.der = true;
+				break;
+			case 77: // letra M
+				this.cameraControl.unlock();
 				break;
 		}
 	}
 
-	/*onKeyUp(event) {
+	onKeyUp(event) {
 		var tecla = event.wich || event.keyCode;
 		switch (tecla) {
 			case 38: case 87: // Flecha arriba
-				this.camera.position.z -= 1;
+				this.adelante = false;
 				break;
-			case 40: // Flecha abajo
-				this.camera.position.z += 1;
+			case 40: case 83: // Flecha abajo
+				this.atras = false;
 				break;
-			case 37: // Flecha izquierda
-				this.camera.position.x -= 1;
+			case 37: case 65: // Flecha izquierda
+				this.izq = false;
 				break;
-			case 39: // Flecha derecha
-				this.camera.position.x += 1;
+			case 39: case 68: // Flecha derecha
+				this.der = false;
+				break;
+			case 77: // Letra M
+				this.cameraControl.lock();
 				break;
 		}
-	}*/
+	}
 
 	// ─── Gestor del Ratón  ──────────────────────────────────────────────────
 
@@ -188,11 +195,6 @@ class MyScene extends THREE.Scene {
 			this.mouseX = mouseX;
 			this.mouseY = mouseY;
 		}
-
-		console.log("prueba");
-		/*this.prueba1 = this.camera.getWorldPosition(event.clientX);
-		this.prueba2 = this.camera.getWorldPosition(event.clientY);
-		this.prueba3 = 0.5;*/
 	}
 
 	onMouseDown(event) {
@@ -340,12 +342,30 @@ class MyScene extends THREE.Scene {
 	// ─── Update ─────────────────────────────────────────────────────────────
 
 	update() {
+		// Se actualizan las estadísticas
 		if (this.stats) this.stats.update();
 
-		// Se actualizan los elementos de la escena para cada frame
+		// Control de las paredes
+		if (this.adelante || this.atras || this.izq || this.der) {
+			//donde_estoy.copy(this.camera.position);
+			var a_donde_miro = new THREE.Vector3(0, 0, 0);
+			this.cameraControl.getDirection(a_donde_miro);
+			a_donde_miro.y = 0;
+			a_donde_miro.normalize();
 
-		// Se actualiza la posición de la cámara según su controlador
-		this.cameraControl.update();
+			if (!this.testColision(this.camera.position, a_donde_miro)) {
+				if (this.adelante)
+					this.cameraControl.moveForward(1);
+				if (this.atras)
+					this.cameraControl.moveForward(-1);
+				if (this.izq)
+					this.cameraControl.moveRight(-1);
+				if (this.der)
+					this.cameraControl.moveRight(1);
+			}
+			console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
+		}
+
 
 		// Se actualiza el resto del modelo
 		this.mosca.update();
@@ -372,6 +392,7 @@ $(function () {
 	// Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
 	window.addEventListener("resize", () => scene.onWindowResize());
 	window.addEventListener("keydown", (event) => scene.onKeyDown(event), true);
+	window.addEventListener("keyup", (event) => scene.onKeyUp(event), true);
 
 	//Añadimos ahora lo listeners que nos van a permitir superar las pruebas del scaperoom.
 	window.addEventListener("mousemove", (event) => scene.onMouseMove(event), true);

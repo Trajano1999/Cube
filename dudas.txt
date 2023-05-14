@@ -1,5 +1,6 @@
 Falta por hacer :
 	- Última pared
+	- Quitar itinerario mosca
 	- Boton luces
 	- Luces techo
 	- Pruebas
@@ -8,5 +9,21 @@ Falta por hacer :
 	- Estanteria cajón y llave
 
 Dudas :
-	1. ¿Es necesario usar keyup y keydown? porque con keydown es suficiente no?
-	2. No se como hcaer que la cámara apunte al ratón.
+	1. Error de PointerLock
+
+
+/*
+	if (this.noRaton == true){
+		const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+		const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+		var _euler = new THREE.Euler();
+		_euler.setFromQuaternion(this.camera.quaternion);
+		_euler.y -= movementX * 0.002 * this.cameraControl.pointerSpeed;
+		_euler.x -= movementY * 0.002 * this.cameraControl.pointerSpeed;
+		//_euler.x = Math.max(Math.PI / 2 - this.cameraControl.maxPolarAngle, Math.min(Math.PI / 2 - this.cameraControl.minPolarAngle, _euler.x));
+
+		this.camera.quaternion.setFromEuler(_euler);
+		this.cameraControl.dispatchEvent(event);
+	}
+*/

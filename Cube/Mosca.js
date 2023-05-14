@@ -33,17 +33,17 @@ class Mosca extends THREE.Object3D {
     recorrido() {
         // construimos los dos caminos con puntos clave
         this.spline = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(20, 32, -20),
-            new THREE.Vector3(-30, 35, -20),
-            new THREE.Vector3(-15, 34, 10),
-            new THREE.Vector3(-10, 36, 0),
-            new THREE.Vector3(-15, 34, -10),
-            new THREE.Vector3(-30, 35, 20),
-            new THREE.Vector3(30, 32, 30),
-            new THREE.Vector3(35, 30, 20),
-            new THREE.Vector3(10, 32, 0),
-            new THREE.Vector3(35, 30, -18),
-            new THREE.Vector3(20, 32, -20),
+            new THREE.Vector3(20, 37, -20),
+            new THREE.Vector3(-30, 40, -20),
+            new THREE.Vector3(-15, 39, 10),
+            new THREE.Vector3(-10, 41, 0),
+            new THREE.Vector3(-15, 39, -10),
+            new THREE.Vector3(-30, 40, 20),
+            new THREE.Vector3(30, 37, 30),
+            new THREE.Vector3(35, 35, 20),
+            new THREE.Vector3(10, 37, 0),
+            new THREE.Vector3(35, 35, -18),
+            new THREE.Vector3(20, 37, -20),
         ]);
 
         // definimos los recorridos
