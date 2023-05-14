@@ -15,6 +15,7 @@ import { Cajonera } from './Cajonera.js'
 import { Mosca } from './Mosca.js'
 import { Boton } from './Boton.js'
 import { Reloj } from './Reloj.js'
+import { BotonLuces } from './Luces.js'
 
 // ─── Clase Escena ───────────────────────────────────────────────────────────
 
@@ -59,7 +60,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.cubos);
 
 		this.puerta = new Puerta();
-		this.puerta.position.set(75 / 2 + 0.1, 0, 25);
+		this.puerta.position.set(75 / 2 + 0.1, 0, 5);
 		this.add(this.puerta);
 
 		this.cajonera = new Cajonera();
@@ -70,12 +71,16 @@ class MyScene extends THREE.Scene {
 		this.add(this.mosca);
 
 		this.boton = new Boton();
-		this.boton.position.set(-75 / 2, 30, 0);
+		this.boton.position.set(-75 / 2, 20, 0);
 		this.add(this.boton);
 
 		this.reloj = new Reloj();
 		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
+
+		this.botonLuces = new BotonLuces();
+		this.botonLuces.position.set(37.5, 12, 23);
+		this.add(this.botonLuces);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -118,8 +123,11 @@ class MyScene extends THREE.Scene {
 
 	testColision(donde_estoy, a_donde_miro) {
 		var bool = false;
-		/*if (posicion.z > -37 && posicion.z < 37 && posicion.x > -37 && posicion.x < 37) {
-			bool = true;
+
+		/*if (donde_estoy.x >= -37) {
+			if (a_donde_miro.x < 0 && a_donde_miro.x > -1 && a_donde_miro.x < 1) {
+				bool = false;
+			}
 		}*/
 
 		return bool;

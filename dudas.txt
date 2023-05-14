@@ -8,7 +8,8 @@ Falta por hacer :
 	- Estanteria cajón y llave
 
 Dudas :
-	1. Error de PointerLock
+	1. Error de PointerLock.
+	2. Aplicar los límites de las paredes.
 
 /*
 	if (this.noRaton == true){
