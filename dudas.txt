@@ -1,16 +1,14 @@
 Falta por hacer :
 	- Última pared
 	- Quitar itinerario mosca
+
 	- Boton luces
 	- Luces techo
 	- Pruebas
-
-	Juanma
 	- Estanteria cajón y llave
 
 Dudas :
 	1. Error de PointerLock
-
 
 /*
 	if (this.noRaton == true){

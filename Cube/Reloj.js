@@ -17,7 +17,7 @@ class Reloj extends THREE.Object3D {
 		this.cuadrado = new THREE.Mesh(geometria_cuadrado, material_cuadrado);
 
 		// creamos el cuerpo del reloj
-		var geometria_cuerpo = new THREE.BoxGeometry(10, 15, 1.5);
+		var geometria_cuerpo = new THREE.BoxGeometry(10, 15, 1.3);
 		this.cuerpo = new THREE.Mesh(geometria_cuerpo, material_cuadrado);
 		this.cuerpo.position.set(0, -7.5 - 5, -3.5);
 
