@@ -36,10 +36,8 @@ class MyScene extends THREE.Scene {
 
 		this.initStats();
 
-		// Construimos los distinos elementos que tendremos en la escena
-
 		// Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
-		// Tras crear cada elemento se añadirá a la escena con   this.add(variable)
+		// Tras crear cada elemento se añadirá a la escena con this.add(variable)
 		this.createLights();
 
 		// Tendremos una cámara con un control de movimiento con el ratón
@@ -104,27 +102,25 @@ class MyScene extends THREE.Scene {
 		//   La razón de aspecto ancho/alto
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, 0.1, 1000);
+		// posición de la cámara
+		this.camera.position.set(32, 10, 36);
 
-		// También se indica dónde se coloca
-		this.camera.position.set(30, 10, 30);
-		// Y hacia dónde mira
-		var look = new THREE.Vector3(0, 0, 0);
-		this.camera.lookAt(look);
+		// apuntamos la cámara al centro
+		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+		// añadimos la cámara
 		this.add(this.camera);
 
 		// Para el control de cámara usamos una clase que ya tiene implementado los movimientos de órbita
 		this.cameraControl = new TrackballControls(this.camera, this.renderer.domElement);
 		// Se configuran las velocidades de los movimientos
-		this.cameraControl.rotateSpeed = 5;
+		/*this.cameraControl.rotateSpeed = 5;
 		this.cameraControl.zoomSpeed = -2;
-		this.cameraControl.panSpeed = 0.5;
+		this.cameraControl.panSpeed = 0.5;*/
 		// Debe orbitar con respecto al punto de mira de la cámara
-		this.posicion_camara = new THREE.Vector3(30, 10, 30);
-		this.cameraControl.target = this.posicion_camara;
 		//this.cameraControl.target = look;
 	}
 
-	// ─── Gestor Tecla Presionada ────────────────────────────────────────────
+	// ─── Gestor Teclas ──────────────────────────────────────────────────────
 
 	onKeyDown(event) {
 		var tecla = event.wich || event.keyCode;
@@ -146,11 +142,58 @@ class MyScene extends THREE.Scene {
 					this.camera.position.x += 1;
 				break;
 		}
-		this.posicion_camara.x = this.camera.position.x;
-		this.posicion_camara.z = this.camera.position.z;
 	}
 
-	// ─── Gestor del Ratón  ─────────────────────────────────────────────
+	/*onKeyUp(event) {
+		var tecla = event.wich || event.keyCode;
+		switch (tecla) {
+			case 38: case 87: // Flecha arriba
+				this.camera.position.z -= 1;
+				break;
+			case 40: // Flecha abajo
+				this.camera.position.z += 1;
+				break;
+			case 37: // Flecha izquierda
+				this.camera.position.x -= 1;
+				break;
+			case 39: // Flecha derecha
+				this.camera.position.x += 1;
+				break;
+		}
+	}*/
+
+	// ─── Gestor del Ratón  ──────────────────────────────────────────────────
+
+	onMouseMove(event) {
+		if (this.cubos_seleccionados) {
+			// Calcula la posición del ratón en la ventana
+			const mouseX = event.clientX;
+			const mouseY = event.clientY;
+
+			// Calcula el desplazamiento del ratón desde la última posición
+			var deltaX = mouseX - this.mouseX;
+			var deltaY = mouseY - this.mouseY;
+
+			deltaX = deltaX / 30;
+			deltaY = deltaY / 30;
+
+			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón
+			this.cubo_seleccionado.position.x += deltaX;
+			this.cubo_seleccionado.position.z += deltaY;
+
+			//Actualizamos la caja englobante
+			//this.cubo_seleccionado.getBoundingBox().setFromObject(this.cubo_seleccionado);
+
+			// Actualiza la posición del ratón
+			this.mouseX = mouseX;
+			this.mouseY = mouseY;
+		}
+
+		console.log("prueba");
+		/*this.prueba1 = this.camera.getWorldPosition(event.clientX);
+		this.prueba2 = this.camera.getWorldPosition(event.clientY);
+		this.prueba3 = 0.5;*/
+	}
 
 	onMouseDown(event) {
 		//var mouse = new THREE.Vector2();
@@ -180,58 +223,11 @@ class MyScene extends THREE.Scene {
 		}
 	}
 
-	onMouseMove(event) {
-		if (this.cubos_seleccionados) {
-			// Calcula la posición del ratón en la ventana
-			const mouseX = event.clientX;
-			const mouseY = event.clientY;
-
-			// Calcula el desplazamiento del ratón desde la última posición
-			var deltaX = mouseX - this.mouseX;
-			var deltaY = mouseY - this.mouseY;
-
-			deltaX = deltaX / 30;
-			deltaY = deltaY / 30;
-
-			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón
-			this.cubo_seleccionado.position.x += deltaX;
-			this.cubo_seleccionado.position.z += deltaY;
-
-			//Actualizamos la caja englobante
-			//this.cubo_seleccionado.getBoundingBox().setFromObject(this.cubo_seleccionado);
-
-			// Actualiza la posición del ratón
-			this.mouseX = mouseX;
-			this.mouseY = mouseY;
-		}
-	}
-
-	onMouseUp(event) {
+	onMouseUp() {
 		if (this.cubos_seleccionados) {
 			this.cubos_seleccionados = false;
 		}
 	}
-
-	// ─── Gestor Tecla Levantada ─────────────────────────────────────────────
-
-	/*onKeyUp(event) {
-		var tecla = event.wich || event.keyCode;
-		switch (tecla) {
-			case 38: // Flecha arriba
-				this.camera.position.z -= 1;
-				break;
-			case 40: // Flecha abajo
-				this.camera.position.z += 1;
-				break;
-			case 37: // Flecha izquierda
-				this.camera.position.x -= 1;
-				break;
-			case 39: // Flecha derecha
-				this.camera.position.x += 1;
-				break;
-		}
-
-	}*/
 
 	// ─── GUI ────────────────────────────────────────────────────────────────
 
@@ -378,9 +374,9 @@ $(function () {
 	window.addEventListener("keydown", (event) => scene.onKeyDown(event), true);
 
 	//Añadimos ahora lo listeners que nos van a permitir superar las pruebas del scaperoom.
-	window.addEventListener("mousedown", (event) => scene.onMouseDown(event), true);
 	window.addEventListener("mousemove", (event) => scene.onMouseMove(event), true);
-	window.addEventListener("mouseup", (event) => scene.onMouseUp(event), true);
+	window.addEventListener("mousedown", (event) => scene.onMouseDown(event), true);
+	window.addEventListener("mouseup", () => scene.onMouseUp(), true);
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();

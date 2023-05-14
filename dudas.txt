@@ -1,11 +1,12 @@
 Falta por hacer :
 	- Última pared
-	- Pruebas
 	- Boton luces
 	- Luces techo
+	- Pruebas
 
 	Juanma
-	- Cámara
-	- Cuerpo Reloj
-	- Textura coca cola
 	- Estanteria cajón y llave
+
+Dudas :
+	1. ¿Es necesario usar keyup y keydown? porque con keydown es suficiente no?
+	2. No se como hcaer que la cámara apunte al ratón.

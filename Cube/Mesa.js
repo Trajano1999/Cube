@@ -154,29 +154,37 @@ class Lata extends THREE.Object3D {
 	constructor() {
 		super();
 
+		// creamos cilindro con textura
+		var geom_Cylinder = new THREE.CylinderGeometry(3.05, 3.05, 7, 32);
+		geom_Cylinder.translate(0, 3.5, 0);
+		var loader = new THREE.TextureLoader();
+		var textura_lata = loader.load('../imgs/lata-coke.jpg');
+		var material_Cylinder = new THREE.MeshPhongMaterial({ map: textura_lata });
+		var cylinder = new THREE.Mesh(geom_Cylinder, material_Cylinder);
+		cylinder.scale.set(0.2, 0.2, 0.2);
+		cylinder.translateY(0.2);
+		this.add(cylinder);
+
+		// añadimos el resto de la lata
 		var points = [
 			new THREE.Vector3(0, 0, 0),
 			new THREE.Vector3(2, 0, 0),
 			new THREE.Vector3(3, 1, 0),
 			new THREE.Vector3(3, 8, 0),
-			new THREE.Vector3(2.5, 8.75, 0),
-			new THREE.Vector3(2.25, 8.75, 0),
-			new THREE.Vector3(2.25, 8.5, 0),
-			new THREE.Vector3(0, 8.5, 0),
+			new THREE.Vector3(2.5, 8.4, 0),
+			new THREE.Vector3(2.5, 8.5, 0),
+			new THREE.Vector3(2.4, 8.5, 0),
+			new THREE.Vector3(2.4, 8.1, 0),
+			new THREE.Vector3(0, 8.1, 0),
 		];
 
 		var miObjeto = new THREE.LatheGeometry(points, 50, 0, 2 * Math.PI);
-		//var miMaterial = new THREE.MeshNormalMaterial();
-		var loader = new THREE.TextureLoader();
-		var textura_reloj = loader.load('../imgs/lata-coke.jpg');
-		var miMaterial = new THREE.MeshPhongMaterial({ map: textura_reloj });
-
+		var miMaterial = new THREE.MeshPhongMaterial({ color: 0x808080 });
 		miMaterial.side = THREE.DoubleSide;
 		miMaterial.flatShading = true;
 		miMaterial.needsUpdate = true;
 
 		this.latheObject = new THREE.Mesh(miObjeto, miMaterial);
-
 		this.latheObject.scale.set(0.2, 0.2, 0.2);
 		this.add(this.latheObject);
 	}
