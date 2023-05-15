@@ -3,6 +3,7 @@ Falta por hacer :
 	- Quitar itinerario mosca
 
 	- Boton luces
+	- Puerta de salida
 	- Luces techo
 	- Pruebas
 	- Estanteria cajón y llave
@@ -10,6 +11,8 @@ Falta por hacer :
 Dudas :
 	1. Error de PointerLock.
 	2. Aplicar los límites de las paredes.
+	3. El cajón debe abrirse con un movimiento de arrastrado o así?
+	4. Cómo hacer para quitar la llave, ya que se piensa que es el pomo.
 
 /*
 	if (this.noRaton == true){

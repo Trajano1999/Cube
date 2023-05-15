@@ -25,6 +25,8 @@ class MyScene extends THREE.Scene {
 		this.cubos_seleccionados = false;
 		this.boton_pulsado = false;
 		this.contador_boton = 0;
+		this.cajonCerrado = true;
+		this.puertaCerrada = true;
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -108,7 +110,7 @@ class MyScene extends THREE.Scene {
 		//   Los planos de recorte cercano y lejano
 		this.camera = new THREE.PerspectiveCamera(85, window.innerWidth / window.innerHeight, 0.1, 1000);
 		// posición de la cámara
-		this.camera.position.set(32, 10, 34);
+		this.camera.position.set(32, 12, 34);
 		// apuntamos la cámara al centro
 		this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 		// añadimos la cámara
@@ -216,7 +218,10 @@ class MyScene extends THREE.Scene {
 
 		this.pickedBoton = this.raycaster.intersectObjects(this.boton.getPickableObjects(), true);
 		this.pickedObjects_cubos = this.raycaster.intersectObjects(this.cubos.getPickableObjects(), true);
+		this.pickedCajon = this.raycaster.intersectObjects(this.cajonera.getPickableObjects(), true);
+		this.pickedPuerta = this.raycaster.intersectObjects(this.puerta.getPickableObjects(), true);
 
+		// cubos
 		if (this.pickedObjects_cubos.length > 0) {
 			this.cubos_seleccionados = true;
 			//console.log("Has clickado en un cubo");
@@ -226,10 +231,23 @@ class MyScene extends THREE.Scene {
 			this.cubo_seleccionado = this.pickedObjects_cubos[0].object.userData;
 		}
 
+		// botón pared
 		if (this.pickedBoton.length > 0) {
 			this.boton_pulsado = true;
 			this.contador_boton += 1;
 			console.log("Boton pulsado " + this.contador_boton + " veces");
+		}
+
+		// cajón
+		if (this.pickedCajon.length > 0) {
+			this.cajonera.update(this.pickedCajon[0], this.cajonCerrado);
+			this.cajonCerrado = !this.cajonCerrado;
+		}
+
+		// pomo puerta
+		if (this.pickedPuerta.length > 0) {
+			this.puerta.update(this.puertaCerrada);
+			this.puertaCerrada = !this.puertaCerrada;
 		}
 	}
 
@@ -371,7 +389,7 @@ class MyScene extends THREE.Scene {
 				if (this.der)
 					this.cameraControl.moveRight(1);
 			}
-			console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
+			// console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
 		}
 
 

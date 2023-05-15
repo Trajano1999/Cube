@@ -1,4 +1,5 @@
 import * as THREE from '../libs/three.module.js'
+import { CSG } from '../libs/CSG-v2.js'
 
 class Paredes extends THREE.Object3D {
 	constructor() {
@@ -34,13 +35,24 @@ class Paredes extends THREE.Object3D {
 		pared_trasera.rotation.x = Math.PI / 2;
 		pared_trasera.position.set(0, this.dimension_pared / 2, -this.dimension_suelo / 2);
 
+		// aplicamos csg
+		var geometria_puerta = new THREE.BoxGeometry(1, 20, 10);
+		geometria_puerta.translate(0, 20 / 2, 0);
+		var material_puerta = new THREE.MeshPhongMaterial({ color: 0x808080 });
+		var puerta = new THREE.Mesh(geometria_puerta, material_puerta);
+		puerta.position.set(75 / 2 + 0.1, 0, 5);
+
+		var csg = new CSG();
+		csg.union([pared_der]);
+		csg.subtract([puerta]);
+
 		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
 		var estructura = new THREE.Object3D();
 		estructura.add(suelo);
 		estructura.add(pared_izq);
-		estructura.add(pared_der);
 		estructura.add(pared_trasera);
 		estructura.add(techo);
+		estructura.add(csg.toMesh());
 		this.add(estructura);
 	}
 
