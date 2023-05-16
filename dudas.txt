@@ -3,15 +3,15 @@ Falta por hacer :
 	- Quitar itinerario mosca
 
 	- Boton luces
-	- Puerta de salida
 	- Luces techo
-	- Pruebas
-	- Estanteria cajón y llave
+	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
+	- Prueba 2 : poner contador de pulsar 3 veces
+	- Prueba 3 : coger llave
 
 Dudas :
 	1. Error de PointerLock.
 	2. Aplicar los límites de las paredes.
-	3. El cajón debe abrirse con un movimiento de arrastrado o así?
+	3. El cajón y la puerta deben abrirse con un movimiento de arrastrado o así?
 	4. Cómo hacer para quitar la llave, ya que se piensa que es el pomo.
 
 /*

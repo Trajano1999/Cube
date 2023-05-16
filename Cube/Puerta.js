@@ -29,10 +29,13 @@ class Puerta extends THREE.Object3D {
 	}
 
 	update(cerrada) {
-		if (!cerrada) {
-			this.rotateY(Math.PI / 2);
-		} else
-			this.rotateY(-Math.PI / 2);
+		if (cerrada) {
+			this.puerta.position.set(5, 0, -5);
+			this.puerta.rotateY(Math.PI / 2);
+		} else {
+			this.puerta.rotateY(-Math.PI / 2);
+			this.puerta.position.set(0, 0, 0);
+		}
 	}
 
 	getPickableObjects() {
