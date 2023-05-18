@@ -12,8 +12,7 @@ class BotonLuces extends THREE.Object3D {
 		var material_boton = new THREE.MeshPhongMaterial({ color: 0x8c004b });
 		this.boton = new THREE.Mesh(geometria_boton, material_boton);
 
-		this.pickableObjects.push(this.boton); 
-
+		this.pickableObjects.push(this.boton);
 		this.add(this.boton);
 	}
 

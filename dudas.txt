@@ -1,8 +1,9 @@
 Falta por hacer :
 	- Última pared
 	- Quitar itinerario mosca
-	- Movimineto cajón
+	- Movimineto del cajón
 	- Límites de paredes
+	- Comprobar que todos los elementos solo se trasladan en la Escena.
 
 	- Boton luces
 	- Luces techo

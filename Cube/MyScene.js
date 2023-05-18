@@ -16,7 +16,8 @@ import { Llave } from './Llave.js'
 import { Mosca } from './Mosca.js'
 import { Boton } from './Boton.js'
 import { Reloj } from './Reloj.js'
-import { BotonLuces } from './Luces.js'
+import { BotonLuces } from './BotonLuces.js'
+import { Lampara } from './Lampara.js'
 
 // ─── Clase Escena ───────────────────────────────────────────────────────────
 
@@ -85,6 +86,10 @@ class MyScene extends THREE.Scene {
 		this.reloj = new Reloj();
 		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
+
+		this.lampara = new Lampara();
+		this.lampara.position.set(0, 0, 0);
+		//this.add(this.lampara);
 
 		this.botonLuces = new BotonLuces();
 		this.botonLuces.position.set(37.5, 12, 23);
@@ -264,7 +269,7 @@ class MyScene extends THREE.Scene {
 
 		// pomo puerta
 		if (this.pickedPuerta.length > 0) {
-			if (this.llaveCogida && !this.puerta_abierta){
+			if (this.llaveCogida && !this.puerta_abierta) {
 				this.puerta.animacion();
 				this.puerta_abierta = true;
 			}
