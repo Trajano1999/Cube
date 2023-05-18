@@ -13,11 +13,13 @@ class Boton extends THREE.Object3D {
 		this.boton = new THREE.Mesh(geometria_boton, material_boton);
 
 		this.pickableObjects.push(this.boton);
-
 		this.add(this.boton);
 	}
 
-	update() { }
+	update() {
+		var material_nuevo = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
+		this.boton.material = material_nuevo
+	}
 
 	getPickableObjects() {
 		return this.pickableObjects;

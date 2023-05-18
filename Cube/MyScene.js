@@ -12,6 +12,7 @@ import { Paredes } from './Paredes.js'
 import { Cubos } from './Cubos.js'
 import { Puerta } from './Puerta.js'
 import { Cajonera } from './Cajonera.js'
+import { Llave } from './Llave.js'
 import { Mosca } from './Mosca.js'
 import { Boton } from './Boton.js'
 import { Reloj } from './Reloj.js'
@@ -23,10 +24,10 @@ class MyScene extends THREE.Scene {
 	constructor(myCanvas) {
 		super();
 		this.cubos_seleccionados = false;
-		this.boton_pulsado = false;
 		this.contador_boton = 0;
 		this.cajonCerrado = true;
-		this.puertaCerrada = true;
+		this.llaveCogida = false;
+		this.seg_prueba_hecha = false;
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -62,11 +63,15 @@ class MyScene extends THREE.Scene {
 		this.add(this.cubos);
 
 		this.puerta = new Puerta();
-		this.puerta.position.set(75 / 2 + 0.1, 0, 5);
+		this.puerta.position.set(75 / 2 + 0.1, 0, 0);
 		this.add(this.puerta);
 
 		this.cajonera = new Cajonera();
 		this.cajonera.position.set(25, 0, -33.5);
+
+		this.llave = new Llave();
+		this.llave.position.set(0, 8, 1);
+		this.cajonera.cajon.add(this.llave);
 		this.add(this.cajonera);
 
 		this.mosca = new Mosca();
@@ -219,6 +224,7 @@ class MyScene extends THREE.Scene {
 		this.pickedBoton = this.raycaster.intersectObjects(this.boton.getPickableObjects(), true);
 		this.pickedObjects_cubos = this.raycaster.intersectObjects(this.cubos.getPickableObjects(), true);
 		this.pickedCajon = this.raycaster.intersectObjects(this.cajonera.getPickableObjects(), true);
+		this.pickedLlave = this.raycaster.intersectObjects(this.llave.getPickableObjects(), true);
 		this.pickedPuerta = this.raycaster.intersectObjects(this.puerta.getPickableObjects(), true);
 
 		// cubos
@@ -233,21 +239,32 @@ class MyScene extends THREE.Scene {
 
 		// botón pared
 		if (this.pickedBoton.length > 0) {
-			this.boton_pulsado = true;
 			this.contador_boton += 1;
-			console.log("Boton pulsado " + this.contador_boton + " veces");
+			//console.log("Boton pulsado " + this.contador_boton + " veces");
+			if (this.contador_boton == 3) {
+				this.seg_prueba_hecha = true;
+				this.boton.update();
+			}
 		}
 
 		// cajón
 		if (this.pickedCajon.length > 0) {
-			this.cajonera.update(this.pickedCajon[0], this.cajonCerrado);
+			this.cajonera.update(this.cajonCerrado);
 			this.cajonCerrado = !this.cajonCerrado;
+		}
+
+		// llave
+		if (this.pickedLlave.length > 0) {
+			if (!this.cajonCerrado && !this.llaveCogida && this.seg_prueba_hecha) {
+				this.llave.update();
+				this.llaveCogida = true;
+			}
 		}
 
 		// pomo puerta
 		if (this.pickedPuerta.length > 0) {
-			this.puerta.update(this.puertaCerrada);
-			this.puertaCerrada = !this.puertaCerrada;
+			//if (this.llaveCogida)
+			this.puerta.animacion();
 		}
 	}
 
@@ -391,7 +408,6 @@ class MyScene extends THREE.Scene {
 			}
 			// console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
 		}
-
 
 		// Se actualiza el resto del modelo
 		this.mosca.update();

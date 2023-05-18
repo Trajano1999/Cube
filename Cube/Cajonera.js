@@ -36,7 +36,7 @@ class Cajonera extends THREE.Object3D {
 		cajon2.position.y = 4.25;
 		cajon3.position.y = 6.25;
 
-		// añadimos los 3 primeros pomos
+		// añadimos los pomos
 		var pomoGeom = new THREE.SphereGeometry(0.25, 15, 15);
 		var pomo1 = new THREE.Mesh(pomoGeom, cajonMat2);
 		pomo1.position.set(0, 2.25, 4);
@@ -44,6 +44,9 @@ class Cajonera extends THREE.Object3D {
 		pomo2.position.set(0, 4.25, 4);
 		var pomo3 = pomo1.clone();
 		pomo3.position.set(0, 6.25, 4);
+		var pomo4 = pomo2.clone()
+		pomo4.position.set(0, 8.25, 4);
+		this.pickableObjects.push(pomo4);
 
 		// añadimos el cuarto cajón
 		var cajon4 = cajon2.clone();
@@ -52,26 +55,14 @@ class Cajonera extends THREE.Object3D {
 		var cajon_eliminado = new THREE.Mesh(geom_cajon_eliminado, cajonMat2);
 		cajon_eliminado.position.set(0, 8.5, 0);
 
-		// añdimos el último pomo
-		var pomo4 = pomo2.clone()
-		pomo4.position.set(0, 8.25, 4);
-		this.pickableObjects.push(pomo4);
-
 		// aplicamos CSG
 		var csg = new CSG();
 		csg.union([cajon4]);
 		csg.subtract([cajon_eliminado]);
 
-		// añadimos la llave
-		var llave = new Llave();
-		llave.scale.set(0.2, 0.2, 0.2);
-		llave.rotateY(Math.PI / 2);
-		llave.position.set(0, 8, 1);
-		this.pickableObjects.push(llave);
-
-		// creamos el cajon (cajon4 - cajon_eliminado, llave, pomo4)
+		// creamos el cajon (cajon4 - cajon_eliminado, pomo4)
 		this.cajon = new THREE.Object3D();
-		this.cajon.add(csg.toMesh(), pomo4, llave);
+		this.cajon.add(csg.toMesh(), pomo4);
 
 		// añadimos el armario entero
 		var armario = new THREE.Object3D();
@@ -79,12 +70,10 @@ class Cajonera extends THREE.Object3D {
 		this.add(armario);
 	}
 
-	update(objeto, cajon_abierto) {
-		if (cajon_abierto) {
-			/*if(objeto == llave)
-				objeto.geometry.dispose();*/
+	update(cajon_cerrado) {
+		if (cajon_cerrado)
 			this.cajon.position.set(0, 0, 5);
-		} else
+		else
 			this.cajon.position.set(0, 0, 0);
 	}
 
@@ -93,27 +82,4 @@ class Cajonera extends THREE.Object3D {
 	}
 }
 
-class Llave extends THREE.Object3D {
-	constructor() {
-		super();
-
-		// cargamos la llave
-		var file = '../models/llave/llave.mtl';
-		var objeto = '../models/llave/llave.obj';
-
-		var materialLoader = new MTLLoader();
-		var objectLoader = new OBJLoader();
-
-		this.llave = new THREE.Object3D();
-		materialLoader.load(file, (materials) => {
-			objectLoader.setMaterials(materials);
-			objectLoader.load(objeto, (object) => {
-				this.llave.add(object);
-			}, null, null);
-		});
-
-		this.add(this.llave);
-	}
-}
-
-export { Cajonera, Llave };
+export { Cajonera };

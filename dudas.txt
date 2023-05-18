@@ -4,28 +4,10 @@ Falta por hacer :
 
 	- Boton luces
 	- Luces techo
+	- Textura de relieve
+	- Movimineto cajón y puerta
 	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
-	- Prueba 2 : poner contador de pulsar 3 veces
-	- Prueba 3 : coger llave
 
 Dudas :
-	1. Error de PointerLock.
-	2. Aplicar los límites de las paredes.
-	3. El cajón y la puerta deben abrirse con un movimiento de arrastrado o así?
-	4. Cómo hacer para quitar la llave, ya que se piensa que es el pomo.
-
-/*
-	if (this.noRaton == true){
-		const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-		const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
-
-		var _euler = new THREE.Euler();
-		_euler.setFromQuaternion(this.camera.quaternion);
-		_euler.y -= movementX * 0.002 * this.cameraControl.pointerSpeed;
-		_euler.x -= movementY * 0.002 * this.cameraControl.pointerSpeed;
-		//_euler.x = Math.max(Math.PI / 2 - this.cameraControl.maxPolarAngle, Math.min(Math.PI / 2 - this.cameraControl.minPolarAngle, _euler.x));
-
-		this.camera.quaternion.setFromEuler(_euler);
-		this.cameraControl.dispatchEvent(event);
-	}
-*/
+	1. Aplicar los límites de las paredes.
+	2. El cajón y la puerta deben abrirse con un movimiento de arrastrado o así?
