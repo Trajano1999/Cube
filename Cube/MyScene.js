@@ -27,6 +27,7 @@ class MyScene extends THREE.Scene {
 		this.contador_boton = 0;
 		this.cajonCerrado = true;
 		this.llaveCogida = false;
+		this.puerta_abierta = false;
 		this.seg_prueba_hecha = false;
 
 		//this.mouse = new THREE.Vector2();
@@ -263,8 +264,10 @@ class MyScene extends THREE.Scene {
 
 		// pomo puerta
 		if (this.pickedPuerta.length > 0) {
-			//if (this.llaveCogida)
-			this.puerta.animacion();
+			if (this.llaveCogida && !this.puerta_abierta){
+				this.puerta.animacion();
+				this.puerta_abierta = true;
+			}
 		}
 	}
 

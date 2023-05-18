@@ -1,13 +1,14 @@
 Falta por hacer :
 	- Última pared
 	- Quitar itinerario mosca
+	- Movimineto cajón
+	- Límites de paredes
 
 	- Boton luces
 	- Luces techo
 	- Textura de relieve
-	- Movimineto cajón y puerta
 	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
 
 Dudas :
 	1. Aplicar los límites de las paredes.
-	2. El cajón y la puerta deben abrirse con un movimiento de arrastrado o así?
+	2. El cajón deben abrirse con un movimiento de arrastrado o así vale?

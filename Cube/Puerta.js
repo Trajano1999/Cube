@@ -42,12 +42,11 @@ class Puerta extends THREE.Object3D {
 			.to(destino, tiempoRecorrido)
 			.easing(TWEEN.Easing.Linear.None)
 			.onUpdate(() => {
-				this.rotateY(Math.PI / 2);
+				this.rotation.y = (Math.PI / 2) * origen.t;
 			})
 			.onComplete(() => {
 				origen.t = 0;
 			})
-			.repeat(1)
 
 		movimiento.start();
 	}
