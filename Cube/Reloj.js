@@ -14,7 +14,7 @@ class Reloj extends THREE.Object3D {
 		// creamos el cuadrado del reloj
 		var geometria_cuadrado = new THREE.BoxGeometry(10, 10, profundidad_cuadrado);
 		geometria_cuadrado.translate(0, 0, -profundidad_cuadrado / 2 - profundidad_reloj);
-		var textura_relieve  = loader.load('../imgs/textura_relieve.jpg');
+		var textura_relieve = loader.load('../imgs/textura_relieve.jpg');
 		var material_cuadrado = new THREE.MeshPhongMaterial({ color: 0x3C270E, bumpMap: textura_relieve });
 		this.cuadrado = new THREE.Mesh(geometria_cuadrado, material_cuadrado);
 
@@ -82,8 +82,8 @@ class Reloj extends THREE.Object3D {
 			})
 			.onComplete(() => { origen.t = 0 })
 			.repeat(Infinity)
-			.yoyo(true)
-			.start();
+			.yoyo(true);
+		movimiento1.start();
 	}
 
 	update() {
