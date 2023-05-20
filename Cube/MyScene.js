@@ -209,8 +209,39 @@ class MyScene extends THREE.Scene {
 			this.cubo_seleccionado.position.x += deltaX;
 			this.cubo_seleccionado.position.z += deltaY;
 
-			//Actualizamos la caja englobante
-			//this.cubo_seleccionado.getBoundingBox().setFromObject(this.cubo_seleccionado);
+			if (this.cubos.hayChoque1 == true) {
+				this.cubo_seleccionado.position.y += 3;
+				this.cubos.hayChoque1 = false;
+				this.cubos.hesubido1 = true;
+			}
+			if (this.cubos.hayChoque2 == true) {
+				this.cubo_seleccionado.position.y += 3;
+				this.cubos.hayChoque2 = false;
+				this.cubos.hesubido2 = true;
+			}
+			if (this.cubos.hayChoque3 == true) {
+				this.cubo_seleccionado.position.y += 3;
+				this.cubos.hayChoque3 = false;
+				this.cubos.hesubido3 = true;
+			}
+
+			if (this.cubos.bajar1 == true) {
+				this.cubos.bajar1 = false;
+				this.cubo_seleccionado.position.y -= 3;
+				this.cubos.hesubido1 = false;
+			}
+
+			if (this.cubos.bajar2 == true) {
+				this.cubos.bajar2 = false;
+				this.cubo_seleccionado.position.y -= 3;
+				this.cubos.hesubido2 = false;
+			}
+
+			if (this.cubos.bajar3 == true) {
+				this.cubos.bajar3 = false;
+				this.cubo_seleccionado.position.y -= 3;
+				this.cubos.hesubido3 = false;
+			}
 
 			// Actualiza la posición del ratón
 			this.mouseX = mouseX;
@@ -236,7 +267,6 @@ class MyScene extends THREE.Scene {
 		// cubos
 		if (this.pickedObjects_cubos.length > 0) {
 			this.cubos_seleccionados = true;
-			//console.log("Has clickado en un cubo");
 			console.log("Has clickado en el cubo con identificador: " + this.pickedObjects_cubos[0].object.userData.getIdCubo());
 			this.mouseX = event.clientX;
 			this.mouseY = event.clientY;
@@ -246,7 +276,6 @@ class MyScene extends THREE.Scene {
 		// botón pared
 		if (this.pickedBoton.length > 0) {
 			this.contador_boton += 1;
-			//console.log("Boton pulsado " + this.contador_boton + " veces");
 			if (this.contador_boton == 3) {
 				this.seg_prueba_hecha = true;
 				this.boton.update();
