@@ -7,7 +7,6 @@ Falta por hacer :
 
 	- Boton luces
 	- Luces techo
-	- Textura de relieve
 	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
 
 Dudas :

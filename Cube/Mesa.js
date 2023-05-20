@@ -9,12 +9,18 @@ class Mesa extends THREE.Object3D {
 
 		var geometria_tablero = new THREE.BoxGeometry(15, 0.2, 10);
 		geometria_tablero.translate(0, -0.1, 0);
-		var material = new THREE.MeshPhongMaterial({ color: 0x804000 });
 		var geometria_pata = new THREE.CylinderGeometry(0.2, 0.2, this.altura_mesa, 10);
 		geometria_pata.translate(0, this.altura_mesa / 2, 0);
 
-		var tablero = new THREE.Mesh(geometria_tablero, material);
+		var loader = new THREE.TextureLoader();
+		var textura_relieve = loader.load('../imgs/textura_relieve.jpg');
+		var textura_madera = loader.load('../imgs/madera.jpg');
+		var material_tablero = new THREE.MeshPhongMaterial({ color: 0x804000, map: textura_madera, bumpMap: textura_relieve });
+
+		var tablero = new THREE.Mesh(geometria_tablero, material_tablero);
 		tablero.position.y = this.altura_mesa;
+
+		var material = new THREE.MeshPhongMaterial({ color: 0x804000 });
 
 		var pata_izq_del = new THREE.Mesh(geometria_pata, material);
 		var pata_izq_tras = pata_izq_del.clone();

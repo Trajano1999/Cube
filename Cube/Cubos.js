@@ -5,7 +5,6 @@ class Cubos extends THREE.Object3D {
 		super();
 
 		this.dimension = 3;
-
 		this.pickableObjects = [];
 
 		var material1 = new THREE.MeshPhongMaterial({ color: 0xff0000 });	//cubo rojo
@@ -27,9 +26,44 @@ class Cubos extends THREE.Object3D {
 		this.add(this.cubo1);
 		this.add(this.cubo2);
 		this.add(this.cubo3);
+
+		this.hayChoque1 = false;
+		this.hayChoque2 = false;
+		this.hayChoque3 = false;
+		this.bajar1 = false;
+		this.bajar2 = false;
+		this.bajar3 = false;
+		this.hesubido1 = false;
+		this.hesubido2 = false;
+		this.hesubido3 = false;
 	}
 
-	update() { }
+	update() {
+		if ((Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) < 4 && this.cubo1.position.y == this.cubo2.position.y) {
+			this.hayChoque1 = true;
+		}
+
+		if (this.hesubido1 && (Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) > 4 && this.cubo1.position.y != this.cubo2.position.y) {
+			this.bajar1 = true;
+		}
+
+		if ((Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) < 4 && this.cubo1.position.y == this.cubo3.position.y) {
+			this.hayChoque2 = true;
+		}
+
+		if (this.hesubido2 && (Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) > 4 && this.cubo1.position.y != this.cubo3.position.y) {
+			this.bajar2 = true;
+		}
+
+
+		if ((Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) < 4 && this.cubo2.position.y == this.cubo3.position.y) {
+			this.hayChoque3 = true;
+		}
+
+		if (this.hesubido3 && (Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) > 4 && this.cubo2.position.y != this.cubo3.position.y) {
+			this.bajar3 = true;
+		}
+	}
 
 	getPickableObjects() {
 		return this.pickableObjects;
@@ -50,20 +84,10 @@ class Cubo extends THREE.Object3D {
 		this.cubo = new THREE.Mesh(geometria_cubo, material);
 		this.cubo.userData = this;
 		this.add(this.cubo);
-
-		/*this.bounding_box = new THREE.Box3().setFromObject(this.cubo);
-
-		this.cajaVisible = new THREE.Box3Helper(this.bounding_box, 0xFFFFFF);
-		this.cajaVisible.visible = true;
-		this.add(this.cajaVisible);*/
 	}
 
 	getIdCubo() {
 		return this.identificador_cubo;
-	}
-
-	getBoundingBox() {
-		//return this.bounding_box;
 	}
 }
 
