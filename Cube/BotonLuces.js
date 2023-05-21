@@ -6,7 +6,7 @@ class BotonLuces extends THREE.Object3D {
 
 		this.pickableObjects = [];
 
-		var geometria_boton = new THREE.CylinderGeometry(1, 1, 1, 20);
+		var geometria_boton = new THREE.CylinderGeometry(1.5, 1.5, 1, 20);
 		geometria_boton.rotateZ(Math.PI / 2);
 		geometria_boton.translate(0, 2 / 2, 0);
 		var material_boton = new THREE.MeshPhongMaterial({ color: 0x8c004b });

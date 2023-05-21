@@ -79,7 +79,6 @@ class MyTaza extends THREE.Object3D {
 		csg.subtract([cilIntMesh]);
 
 		var resultadoMesh = csg.toMesh();
-
 		resultadoMesh.scale.set(0.2, 0.2, 0.2);
 		resultadoMesh.position.y = 1;
 		this.add(resultadoMesh);
@@ -90,28 +89,18 @@ class MyCorazonBarrido extends THREE.Object3D {
 	constructor() {
 		super();
 
-		// Se crea la parte de la interfaz que corresponde a la caja
-		// Se crea primero porque otros métodos usan las variables que se definen para la interfaz
-		//this.createGUI(gui,titleGui);
-
 		var shape = new THREE.Shape();
-
 		shape.moveTo(0, 1);
 		shape.bezierCurveTo(0.5, 3.5, 4, 1, 0, -2);
 		shape.bezierCurveTo(-4, 1, -0.5, 3.5, 0, 1);
 
-		//var path = new THREE.CatmullRomCurve3([new THREE.Vector2(0, 2), new THREE.Vector2(1,1), new THREE.Vector2(0, 0), new THREE.Vector2(-1, -1), new THREE.Vector2(0, -2)]);
 		var path = this.createCamino();
-
 		var options = { curveSegments: 50, steps: 100, extrudePath: path };
 		var geometry = new THREE.ExtrudeGeometry(this.rotateShape(shape, Math.PI, 100), options);
-		//var geometry = new THREE.ExtrudeGeometry(shape, options);
 		geometry.scale(0.2, 0.2, 0.2);
 
 		var material = new THREE.MeshNormalMaterial();
-
 		var heart = new THREE.Mesh(geometry, material);
-
 		this.add(heart);
 	}
 

@@ -1,12 +1,11 @@
-Falta por hacer :
+Detalles finales:
 	- Última pared
 	- Quitar itinerario mosca
-	- Movimineto del cajón
-	- Límites de paredes
-	- Comprobar que todos los elementos solo se trasladan en la Escena.
+	- Movimiento del cajón
 
-	- Boton luces
+Falta por hacer :
 	- Luces techo
+	- Límites de paredes
 	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
 
 Dudas :

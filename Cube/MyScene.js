@@ -30,6 +30,7 @@ class MyScene extends THREE.Scene {
 		this.llaveCogida = false;
 		this.puerta_abierta = false;
 		this.seg_prueba_hecha = false;
+		this.luz_encendida = false;
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -87,13 +88,13 @@ class MyScene extends THREE.Scene {
 		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
 
-		this.lampara = new Lampara();
-		this.lampara.position.set(0, 0, 0);
-		//this.add(this.lampara);
-
 		this.botonLuces = new BotonLuces();
 		this.botonLuces.position.set(37.5, 12, 23);
 		this.add(this.botonLuces);
+
+		this.lampara = new Lampara();
+		this.lampara.position.set(0, 41.2, 0);
+		this.add(this.lampara);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -263,6 +264,7 @@ class MyScene extends THREE.Scene {
 		this.pickedCajon = this.raycaster.intersectObjects(this.cajonera.getPickableObjects(), true);
 		this.pickedLlave = this.raycaster.intersectObjects(this.llave.getPickableObjects(), true);
 		this.pickedPuerta = this.raycaster.intersectObjects(this.puerta.getPickableObjects(), true);
+		this.pickedBotonLuces = this.raycaster.intersectObjects(this.botonLuces.getPickableObjects(), true);
 
 		// cubos
 		if (this.pickedObjects_cubos.length > 0) {
@@ -302,6 +304,13 @@ class MyScene extends THREE.Scene {
 				this.puerta.animacion();
 				this.puerta_abierta = true;
 			}
+		}
+
+		// botón luces
+		if (this.pickedBotonLuces.length > 0){
+			this.luz_encendida = !this.luz_encendida;
+			if(this.luz_encendida)
+				console.log("encendida");
 		}
 	}
 
