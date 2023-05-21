@@ -389,11 +389,11 @@ class MyScene extends THREE.Scene {
 
 	// ─── Gestor de Luces ────────────────────────────────────────────────────
 
-	gestorLuces(){
-		if(this.luz_blanca_encendida){
+	gestorLuces() {
+		if (this.luz_blanca_encendida) {
 			this.remove(this.spotLightAzul);
 			this.add(this.spotLightBlanca);
-		}else{
+		} else {
 			this.remove(this.spotLightBlanca);
 			this.add(this.spotLightAzul);
 		}
