@@ -30,7 +30,7 @@ class MyScene extends THREE.Scene {
 		this.llaveCogida = false;
 		this.puerta_abierta = false;
 		this.seg_prueba_hecha = false;
-		this.luz_encendida = false;
+		this.luz_blanca_encendida = false;
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -92,9 +92,13 @@ class MyScene extends THREE.Scene {
 		this.botonLuces.position.set(37.5, 12, 23);
 		this.add(this.botonLuces);
 
-		this.lampara = new Lampara();
-		this.lampara.position.set(0, 41.2, 0);
-		this.add(this.lampara);
+		this.lamparaAmarilla = new Lampara();
+		this.lamparaAmarilla.position.set(-15, 41.2, 0);
+		this.add(this.lamparaAmarilla);
+
+		this.lamparaAzul = new Lampara();
+		this.lamparaAzul.position.set(15, 41.2, 0);
+		this.add(this.lamparaAzul);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -307,10 +311,8 @@ class MyScene extends THREE.Scene {
 		}
 
 		// botón luces
-		if (this.pickedBotonLuces.length > 0){
-			this.luz_encendida = !this.luz_encendida;
-			if(this.luz_encendida)
-				console.log("encendida");
+		if (this.pickedBotonLuces.length > 0) {
+			this.luz_blanca_encendida = !this.luz_blanca_encendida;
 		}
 	}
 
@@ -356,19 +358,45 @@ class MyScene extends THREE.Scene {
 	createLights() {
 		// Se crea una luz ambiental, evita que se vean complentamente negras las zonas donde no incide de manera directa una fuente de luz
 		// La luz ambiental solo tiene un color y una intensidad
-		// Se declara como   var   y va a ser una variable local a este método
-		//    se hace así puesto que no va a ser accedida desde otros métodos
-		var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
-		// La añadimos a la escena
+		// Se declara como var y va a ser una variable local a este método
+		// se hace así puesto que no va a ser accedida desde otros métodos
+		var ambientLight = new THREE.AmbientLight(0xccddee, 0.5);
 		this.add(ambientLight);
 
-		// Se crea una luz focal que va a ser la luz principal de la escena
-		// La luz focal, además tiene una posición, y un punto de mira
-		// Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
-		// En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
-		this.spotLight = new THREE.SpotLight(0xffffff, this.guiControls.lightIntensity);
-		this.spotLight.position.set(60, 60, 40);
-		this.add(this.spotLight);
+		// luz amarilla
+		this.spotLightAmarrila = new THREE.SpotLight(0xFFFF00, 0.4);
+		this.spotLightAmarrila.position.set(-15, 44.2, 0);
+		var target_amarilla = new THREE.Object3D();
+		target_amarilla.position.set(-15, 0, 0);
+		this.spotLightAmarrila.target = target_amarilla;
+		this.add(target_amarilla);
+		this.add(this.spotLightAmarrila);
+
+		// luz azul
+		this.spotLightAzul = new THREE.SpotLight(0x53C7FA, this.guiControls.lightIntensity);
+		this.spotLightAzul.position.set(15, 44.2, 0);
+		var target_azul = new THREE.Object3D();
+		target_azul.position.set(15, 0, 0);
+		this.spotLightAzul.target = target_azul;
+		this.add(target_azul);
+		this.add(this.spotLightAzul);
+
+		// luz Blanca
+		this.spotLightBlanca = new THREE.SpotLight(0x56FFF5, this.guiControls.lightIntensity);
+		this.spotLightBlanca.position.set(15, 44.2, 0);
+		this.spotLightBlanca.target = target_azul;
+	}
+
+	// ─── Gestor de Luces ────────────────────────────────────────────────────
+
+	gestorLuces(){
+		if(this.luz_blanca_encendida){
+			this.remove(this.spotLightAzul);
+			this.add(this.spotLightBlanca);
+		}else{
+			this.remove(this.spotLightBlanca);
+			this.add(this.spotLightAzul);
+		}
 	}
 
 	// ─── Getters ────────────────────────────────────────────────────────────
@@ -382,7 +410,8 @@ class MyScene extends THREE.Scene {
 	// ─── Setters ────────────────────────────────────────────────────────────
 
 	setLightIntensity(valor) {
-		this.spotLight.intensity = valor;
+		this.spotLightBlanca.intensity = valor;
+		this.spotLightAzul.intensity = valor;
 	}
 
 	setAxisVisible(valor) {
@@ -460,6 +489,9 @@ class MyScene extends THREE.Scene {
 		this.reloj.update();
 		if (this.cubos_seleccionados)
 			this.cubos.update();
+
+		// Se actualizan las luces
+		this.gestorLuces();
 
 		// Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
 		this.renderer.render(this, this.getCamera());
