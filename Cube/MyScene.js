@@ -446,8 +446,13 @@ class MyScene extends THREE.Scene {
 		// La luz ambiental solo tiene un color y una intensidad
 		// Se declara como var y va a ser una variable local a este método
 		// se hace así puesto que no va a ser accedida desde otros métodos
-		var ambientLight = new THREE.AmbientLight(0xccddee, 0.5);
+		var ambientLight = new THREE.AmbientLight(0xccddee, 0.35);
 		this.add(ambientLight);
+
+		// luz general
+		this.spotLightGeneral = new THREE.SpotLight(0xccddee, 0.35);
+		this.spotLightGeneral.position.set(60, 60, 20);
+		this.add(this.spotLightGeneral);
 
 		// luz amarilla
 		this.spotLightAmarrila = new THREE.SpotLight(0xFFFF00, 0.4);
@@ -468,7 +473,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.spotLightAzul);
 
 		// luz Blanca
-		this.spotLightBlanca = new THREE.SpotLight(0xFFFFFF, this.guiControls.lightIntensity);
+		this.spotLightBlanca = new THREE.SpotLight(0xFFFFFF, this.guiControls.lightIntensity - 0.1);
 		this.spotLightBlanca.position.set(15, 44.2, 0);
 		this.spotLightBlanca.target = target_azul;
 	}

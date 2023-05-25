@@ -19,9 +19,6 @@ class Lampara extends THREE.Object3D {
 
 		var miObjeto = new THREE.LatheGeometry(points, 100, 0, 2 * Math.PI);
 		var miMaterial = this.material;
-		miMaterial.side = THREE.DoubleSide;
-		miMaterial.flatShading = true;
-		miMaterial.needsUpdate = true;
 
 		this.latheObject = new THREE.Mesh(miObjeto, miMaterial);
 		this.latheObject.scale.set(0.8, 0.8, 0.8);
