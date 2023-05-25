@@ -1,8 +1,2 @@
 Falta por hacer :
-	- Límites de paredes
-	- Colisiones
-
-Detalles :
-	- Color de la jarra
-	- Corazon estirado
-	- Textura de los cubos
+	- Colisiones de los cubos

@@ -173,7 +173,7 @@ class MyScene extends THREE.Scene {
 		this.material_lampara_blanca = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, emissive: true, emissiveIntensity: 1 });
 
 		// añadimos cilindro trasparente
-		this.cilindro_transparente = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.1, 12, 30), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }));
+		this.cilindro_transparente = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 1, 12, 50), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }));
 		this.cilindro_transparente.position.set(32, 6, 34);
 		this.add(this.cilindro_transparente);
 
@@ -196,7 +196,6 @@ class MyScene extends THREE.Scene {
 		stats.domElement.style.top = '0px';
 
 		$("#Stats-output").append(stats.domElement);
-
 		this.stats = stats;
 	}
 
@@ -293,10 +292,13 @@ class MyScene extends THREE.Scene {
 	estanAlineados() {
 		if ((Math.abs(this.cubos.cubo1.position.x - this.cubos.cubo2.position.x) + (Math.abs(this.cubos.cubo1.position.z - this.cubos.cubo2.position.z))) > 1.5)
 			return false;
+
 		if ((Math.abs(this.cubos.cubo1.position.x - this.cubos.cubo3.position.x) + (Math.abs(this.cubos.cubo1.position.z - this.cubos.cubo3.position.z))) > 1.5)
 			return false;
+
 		if ((Math.abs(this.cubos.cubo2.position.x - this.cubos.cubo3.position.x) + (Math.abs(this.cubos.cubo2.position.z - this.cubos.cubo3.position.z))) > 1.5)
 			return false;
+
 		return true;
 	}
 
@@ -309,7 +311,6 @@ class MyScene extends THREE.Scene {
 
 			this.cameraControl.getDirection(miroHacia);
 			miroHacia.normalize();
-
 
 			const speed = 0.03;
 			const desplazamientox = -movementX * speed;
@@ -329,7 +330,6 @@ class MyScene extends THREE.Scene {
 
 			deltaX = deltaX / 30;
 			deltaY = deltaY / 30;
-
 
 			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón solo si no tiene cubos encima
 			if (!this.hayCuboEncima(this.cubo_seleccionado)) {
@@ -428,7 +428,6 @@ class MyScene extends THREE.Scene {
 				this.llave_seleccionada = true;
 				this.llave.update();
 				this.llaveCogida = true;
-
 			}
 		}
 
@@ -443,12 +442,10 @@ class MyScene extends THREE.Scene {
 		// botón luces
 		if (this.pickedBotonLuces.length > 0) {
 			this.luz_blanca_encendida = !this.luz_blanca_encendida;
-			if (this.luz_blanca_encendida) {
+			if (this.luz_blanca_encendida)
 				this.lamparaAzul.setMaterial(this.material_lampara_blanca);
-			}
-			else {
+			else 
 				this.lamparaAzul.setMaterial(this.material_lampara_azul);
-			}
 		}
 	}
 
@@ -487,7 +484,7 @@ class MyScene extends THREE.Scene {
 		// En este caso la intensidad de la luz y si se muestran o no los ejes
 		this.guiControls = {
 			// En el contexto de una función   this   alude a la función
-			lightIntensity: 0.4,
+			lightIntensity: 0.3,
 			axisOnOff: true
 		}
 
@@ -590,7 +587,7 @@ class MyScene extends THREE.Scene {
 	createRenderer(myCanvas) {
 		// Se recibe el lienzo sobre el que se van a hacer los renderizados. Un div definido en el html.
 
-		// Se instancia un Renderer   WebGL
+		// Se instancia un Renderer WebGL
 		var renderer = new THREE.WebGLRenderer();
 
 		// Se establece un color de fondo en las imágenes que genera el render
@@ -642,8 +639,8 @@ class MyScene extends THREE.Scene {
 					this.cilindro_transparente.position.z -= a_donde_miro.z / 2;
 					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 				}
-
 			}
+
 			if (this.atras) {
 				this.cameraControl.moveForward(-1 / 2);
 				this.cilindro_transparente.position.x -= a_donde_miro.x / 2;
@@ -657,6 +654,7 @@ class MyScene extends THREE.Scene {
 					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 				}
 			}
+
 			if (this.izq) {
 				this.cameraControl.moveRight(-1 / 2);
 				this.cilindro_transparente.position.x += a_donde_miro.z / 2;
@@ -669,8 +667,8 @@ class MyScene extends THREE.Scene {
 					this.cilindro_transparente.position.z += a_donde_miro.x / 2;
 					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 				}
-
 			}
+
 			if (this.der) {
 				this.cameraControl.moveRight(1 / 2);
 				this.cilindro_transparente.position.x -= a_donde_miro.z / 2;
