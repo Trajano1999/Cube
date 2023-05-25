@@ -2,7 +2,7 @@ Falta por hacer :
 	- Límites de paredes
 	- Colisiones
 
-Entrega :
-	- El documento de diseño debe incluir un diagrama de clases, el modelo jerárquico del objeto articulado que se incluye y la descripción de los algoritmos más importantes del juego.
-	- Manual de usuario que explique claramente cómo resolver el juego.
-	- Video de ejemplo.
+Detalles :
+	- Color de la jarra
+	- Corazon estirado
+	- Textura de los cubos
