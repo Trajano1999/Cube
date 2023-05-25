@@ -3,7 +3,7 @@ import * as THREE from '../libs/three.module.js'
 class Cubos extends THREE.Object3D {
 	constructor() {
 		super();
-		
+
 
 		this.dimension = 3;
 		this.pickableObjects = [];
@@ -40,8 +40,8 @@ class Cubos extends THREE.Object3D {
 		this.hesubido3 = false;
 	}
 
-	cambiarColor(){
-		var nuevomaterial = new THREE.MeshPhongMaterial({color: 0xff0080});
+	cambiarColor() {
+		var nuevomaterial = new THREE.MeshPhongMaterial({ color: 0xff0080 });
 		//var nuevomaterial = new THREE.MeshNormalMaterial();
 		this.cubo1.setMaterial(nuevomaterial);
 		this.cubo2.setMaterial(nuevomaterial);
@@ -102,11 +102,11 @@ class Cubo extends THREE.Object3D {
 		return this.identificador_cubo;
 	}
 
-	getPuedeMoverse(){
+	getPuedeMoverse() {
 		return this.puede_moverse;
 	}
 
-	setMaterial(material){
+	setMaterial(material) {
 		this.cubo.material = material;
 	}
 }

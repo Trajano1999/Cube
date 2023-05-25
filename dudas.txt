@@ -1,20 +1,7 @@
 Falta por hacer :
-	- Luces techo: 
-		En la parte central del techo, hay
-		dos luces: una amarilla y una azul. Habrá que pulsar un interruptor que hay en la pared en el
-		sitio donde aparece inicialmente el jugador, de forma que la luz azul se convertirá en blanca.
 	- Límites de paredes
-	- Prueba 1 : arrastrar cubos (tener en cuenta el eje)
-
-Detalles finales:
-	- Última pared
-	- Quitar itinerario mosca
+	- Colisiones
 	- Movimiento del cajón
-
-Dudas :
-	1. Posición de las luces. ¿Más luz de ambiente? ¿Otros colores? 
-	2. Aplicar los límites de las paredes.
-	3. El cajón deben abrirse con un movimiento de arrastrado o así vale
 
 Entrega :
 	- El documento de diseño debe incluir un diagrama de clases, el modelo jerárquico del objeto articulado que se incluye y la descripción de los algoritmos más importantes del juego.
