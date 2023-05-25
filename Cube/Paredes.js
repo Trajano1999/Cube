@@ -35,6 +35,9 @@ class Paredes extends THREE.Object3D {
 		pared_trasera.rotation.x = Math.PI / 2;
 		pared_trasera.position.set(0, this.dimension_pared / 2, -this.dimension_suelo / 2);
 
+		var pared_delantera = pared_trasera.clone();
+		pared_delantera.position.z += this.dimension_suelo;
+
 		// aplicamos csg
 		var geometria_puerta = new THREE.BoxGeometry(1, 20, 10);
 		geometria_puerta.translate(0, 20 / 2, 0);
@@ -53,6 +56,7 @@ class Paredes extends THREE.Object3D {
 		estructura.add(pared_trasera);
 		estructura.add(techo);
 		estructura.add(csg.toMesh());
+		estructura.add(pared_delantera);
 		this.add(estructura);
 	}
 

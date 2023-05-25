@@ -17,7 +17,7 @@ class Boton extends THREE.Object3D {
 	}
 
 	update() {
-		var material_nuevo = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
+		var material_nuevo = new THREE.MeshPhongMaterial({ color: 0x00FF00 });
 		this.boton.material = material_nuevo
 	}
 

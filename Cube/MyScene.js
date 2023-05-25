@@ -25,12 +25,17 @@ class MyScene extends THREE.Scene {
 	constructor(myCanvas) {
 		super();
 		this.cubos_seleccionados = false;
+		this.boton_seleccionado = false;
+		this.llave_seleccionada = false;
 		this.contador_boton = 0;
 		this.cajonCerrado = true;
 		this.llaveCogida = false;
 		this.puerta_abierta = false;
+		this.primera_prueba_hecha = false;
 		this.seg_prueba_hecha = false;
 		this.luz_blanca_encendida = false;
+
+		alert("¡¡BIENVENIDO A CUBE!!\nPara poder salir de la habitación necesitas resolver tres pruebas.\nLa primera prueba consiste en apilar los cubos en orden RGB.");
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -155,22 +160,24 @@ class MyScene extends THREE.Scene {
 
 	onKeyDown(event) {
 		var tecla = event.wich || event.keyCode;
-		switch (tecla) {
-			case 38: case 87: // Flecha arriba
-				this.adelante = true;
-				break;
-			case 40: case 83: // Flecha abajo
-				this.atras = true;
-				break;
-			case 37: case 65: // Flecha izquierda
-				this.izq = true;
-				break;
-			case 39: case 68: // Flecha derecha
-				this.der = true;
-				break;
-			case 77: // letra M
-				this.cameraControl.unlock();
-				break;
+		if(!this.testColision(this.a, this.b)){
+			switch (tecla) {
+				case 38: case 87: // Flecha arriba
+					this.adelante = true;
+					break;
+				case 40: case 83: // Flecha abajo
+					this.atras = true;
+					break;
+				case 37: case 65: // Flecha izquierda
+					this.izq = true;
+					break;
+				case 39: case 68: // Flecha derecha
+					this.der = true;
+					break;
+				case 77: // letra M
+					this.cameraControl.unlock();
+					break;
+			}
 		}
 	}
 
@@ -197,8 +204,55 @@ class MyScene extends THREE.Scene {
 
 	// ─── Gestor del Ratón  ──────────────────────────────────────────────────
 
+	hayCuboEncima(cubo){
+
+		if(this.cubos.cubo1.position.y > cubo.position.y && (Math.abs(this.cubos.cubo1.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo1.position.z - cubo.position.z))) < 1.5)
+			return true;
+
+
+		if(this.cubos.cubo2.position.y > cubo.position.y && (Math.abs(this.cubos.cubo2.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo2.position.z - cubo.position.z))) < 1.5)
+			return true;
+
+
+		if(this.cubos.cubo3.position.y > cubo.position.y && (Math.abs(this.cubos.cubo3.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo3.position.z - cubo.position.z))) < 1.5)
+			return true;
+
+		return false;
+
+	}
+
+	estanAlineados(){
+		if((Math.abs(this.cubos.cubo1.position.x - this.cubos.cubo2.position.x) + (Math.abs(this.cubos.cubo1.position.z - this.cubos.cubo2.position.z))) > 1.5)
+			return false;
+		if((Math.abs(this.cubos.cubo1.position.x - this.cubos.cubo3.position.x) + (Math.abs(this.cubos.cubo1.position.z - this.cubos.cubo3.position.z))) > 1.5)
+			return false;
+		if((Math.abs(this.cubos.cubo2.position.x - this.cubos.cubo3.position.x) + (Math.abs(this.cubos.cubo2.position.z - this.cubos.cubo3.position.z))) > 1.5)
+			return false;
+		return true;
+	}
+
 	onMouseMove(event) {
 		if (this.cubos_seleccionados) {
+			const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+			const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+			var miroHacia = new THREE.Vector3(0, 0, 0);
+
+			this.cameraControl.getDirection(miroHacia);
+			miroHacia.normalize();
+
+
+			const speed = 0.03;
+			const desplazamientox = -movementX * speed;
+			const desplazamientoy = -movementY * speed;
+
+			const desplazamiento = miroHacia.clone().multiplyScalar(desplazamientoy);
+			desplazamiento.y = 0;
+			desplazamiento.add(miroHacia.clone().cross(new THREE.Vector3(0, -1, 0)).multiplyScalar(desplazamientox));
+
+			
+
+			
 			// Calcula la posición del ratón en la ventana
 			const mouseX = event.clientX;
 			const mouseY = event.clientY;
@@ -209,44 +263,49 @@ class MyScene extends THREE.Scene {
 
 			deltaX = deltaX / 30;
 			deltaY = deltaY / 30;
+			
 
-			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón
-			this.cubo_seleccionado.position.x += deltaX;
-			this.cubo_seleccionado.position.z += deltaY;
+			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón solo si no tiene cubos encima
+			if(!this.hayCuboEncima(this.cubo_seleccionado)){
+				//this.cubo_seleccionado.position.x += deltaX;
+				//this.cubo_seleccionado.position.z += deltaY;
+				this.cubo_seleccionado.position.add(desplazamiento);
 
-			if (this.cubos.hayChoque1 == true) {
-				this.cubo_seleccionado.position.y += 3;
-				this.cubos.hayChoque1 = false;
-				this.cubos.hesubido1 = true;
-			}
-			if (this.cubos.hayChoque2 == true) {
-				this.cubo_seleccionado.position.y += 3;
-				this.cubos.hayChoque2 = false;
-				this.cubos.hesubido2 = true;
-			}
-			if (this.cubos.hayChoque3 == true) {
-				this.cubo_seleccionado.position.y += 3;
-				this.cubos.hayChoque3 = false;
-				this.cubos.hesubido3 = true;
-			}
+				if (this.cubos.hayChoque1 == true) {
+					this.cubo_seleccionado.position.y += 3;
+					this.cubos.hayChoque1 = false;
+					this.cubos.hesubido1 = true;
+				}
+				if (this.cubos.hayChoque2 == true) {
+					this.cubo_seleccionado.position.y += 3;
+					this.cubos.hayChoque2 = false;
+					this.cubos.hesubido2 = true;
+				}
+				if (this.cubos.hayChoque3 == true) {
+					this.cubo_seleccionado.position.y += 3;
+					this.cubos.hayChoque3 = false;
+					this.cubos.hesubido3 = true;
+				}
 
-			if (this.cubos.bajar1 == true) {
-				this.cubos.bajar1 = false;
-				this.cubo_seleccionado.position.y -= 3;
-				this.cubos.hesubido1 = false;
-			}
+				if (this.cubos.bajar1 == true) {
+					this.cubos.bajar1 = false;
+					this.cubo_seleccionado.position.y -= 3;
+					this.cubos.hesubido1 = false;
+				}
 
-			if (this.cubos.bajar2 == true) {
-				this.cubos.bajar2 = false;
-				this.cubo_seleccionado.position.y -= 3;
-				this.cubos.hesubido2 = false;
-			}
+				if (this.cubos.bajar2 == true) {
+					this.cubos.bajar2 = false;
+					this.cubo_seleccionado.position.y -= 3;
+					this.cubos.hesubido2 = false;
+				}
 
-			if (this.cubos.bajar3 == true) {
-				this.cubos.bajar3 = false;
-				this.cubo_seleccionado.position.y -= 3;
-				this.cubos.hesubido3 = false;
+				if (this.cubos.bajar3 == true) {
+					this.cubos.bajar3 = false;
+					this.cubo_seleccionado.position.y -= 3;
+					this.cubos.hesubido3 = false;
+				}
 			}
+			
 
 			// Actualiza la posición del ratón
 			this.mouseX = mouseX;
@@ -280,7 +339,8 @@ class MyScene extends THREE.Scene {
 		}
 
 		// botón pared
-		if (this.pickedBoton.length > 0) {
+		if (this.pickedBoton.length > 0 && this.primera_prueba_hecha) {
+			this.boton_seleccionado = true;
 			this.contador_boton += 1;
 			if (this.contador_boton == 3) {
 				this.seg_prueba_hecha = true;
@@ -297,8 +357,10 @@ class MyScene extends THREE.Scene {
 		// llave
 		if (this.pickedLlave.length > 0) {
 			if (!this.cajonCerrado && !this.llaveCogida && this.seg_prueba_hecha) {
+				this.llave_seleccionada = true;
 				this.llave.update();
 				this.llaveCogida = true;
+
 			}
 		}
 
@@ -318,8 +380,27 @@ class MyScene extends THREE.Scene {
 
 	onMouseUp() {
 		if (this.cubos_seleccionados) {
+			if(this.cubos.cubo1.position.y == 6 && this.cubos.cubo2.position.y == 3 && this.cubos.cubo3.position.y == 0 && this.estanAlineados()){
+				this.primera_prueba_hecha = true;
+				this.cubos.cambiarColor();
+				alert("HAS CONSEGUIDO LA PRIMERA PRUEBA!.\nAhora tienes que pulsar 3 veces el botón que está en la pared.");
+			}
 			this.cubos_seleccionados = false;
 		}
+
+		if(this.boton_seleccionado){
+			this.boton_seleccionado = false;
+			if(this.seg_prueba_hecha){
+				alert("HAS CONSEGUIDO LA SEGUNDA PRUEBA!.\nAhora tienes que encontrar la llave para abrir la puerta y poder salir.");
+			}
+		}
+
+		if(this.llave_seleccionada){
+			this.llave_seleccionada = false;
+			alert("HAS RESUELTO TODAS LAS PRUEBAS!.\nAhora puedes abrir la puerta y salir de la habitación.");
+
+		}
+		
 	}
 
 	// ─── GUI ────────────────────────────────────────────────────────────────
@@ -382,7 +463,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.spotLightAzul);
 
 		// luz Blanca
-		this.spotLightBlanca = new THREE.SpotLight(0x56FFF5, this.guiControls.lightIntensity);
+		this.spotLightBlanca = new THREE.SpotLight(0xFFFFFF, this.guiControls.lightIntensity);
 		this.spotLightBlanca.position.set(15, 44.2, 0);
 		this.spotLightBlanca.target = target_azul;
 	}
@@ -473,13 +554,13 @@ class MyScene extends THREE.Scene {
 
 			if (!this.testColision(this.camera.position, a_donde_miro)) {
 				if (this.adelante)
-					this.cameraControl.moveForward(1);
+					this.cameraControl.moveForward(1/2);
 				if (this.atras)
-					this.cameraControl.moveForward(-1);
+					this.cameraControl.moveForward(-1/2);
 				if (this.izq)
-					this.cameraControl.moveRight(-1);
+					this.cameraControl.moveRight(-1/2);
 				if (this.der)
-					this.cameraControl.moveRight(1);
+					this.cameraControl.moveRight(1/2);
 			}
 			// console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
 		}
@@ -521,4 +602,6 @@ $(function () {
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();
+
+	
 });

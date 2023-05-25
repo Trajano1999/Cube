@@ -3,9 +3,11 @@ import * as THREE from '../libs/three.module.js'
 class Cubos extends THREE.Object3D {
 	constructor() {
 		super();
+		
 
 		this.dimension = 3;
 		this.pickableObjects = [];
+		this.MAX_DISTANCIA_CHOQUE = 4;
 
 		var material1 = new THREE.MeshPhongMaterial({ color: 0xff0000 });	//cubo rojo
 		var material2 = new THREE.MeshPhongMaterial({ color: 0x00ff00 });	//cubo verde
@@ -38,29 +40,37 @@ class Cubos extends THREE.Object3D {
 		this.hesubido3 = false;
 	}
 
+	cambiarColor(){
+		var nuevomaterial = new THREE.MeshPhongMaterial({color: 0xff0080});
+		//var nuevomaterial = new THREE.MeshNormalMaterial();
+		this.cubo1.setMaterial(nuevomaterial);
+		this.cubo2.setMaterial(nuevomaterial);
+		this.cubo3.setMaterial(nuevomaterial);
+	}
+
 	update() {
-		if ((Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) < 4 && this.cubo1.position.y == this.cubo2.position.y) {
+		if ((Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo2.position.y) {
 			this.hayChoque1 = true;
 		}
 
-		if (this.hesubido1 && (Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) > 4 && this.cubo1.position.y != this.cubo2.position.y) {
+		if (this.hesubido1 && (Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo2.position.y) {
 			this.bajar1 = true;
 		}
 
-		if ((Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) < 4 && this.cubo1.position.y == this.cubo3.position.y) {
+		if ((Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo3.position.y) {
 			this.hayChoque2 = true;
 		}
 
-		if (this.hesubido2 && (Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) > 4 && this.cubo1.position.y != this.cubo3.position.y) {
+		if (this.hesubido2 && (Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo3.position.y) {
 			this.bajar2 = true;
 		}
 
 
-		if ((Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) < 4 && this.cubo2.position.y == this.cubo3.position.y) {
+		if ((Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y == this.cubo3.position.y) {
 			this.hayChoque3 = true;
 		}
 
-		if (this.hesubido3 && (Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) > 4 && this.cubo2.position.y != this.cubo3.position.y) {
+		if (this.hesubido3 && (Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y != this.cubo3.position.y) {
 			this.bajar3 = true;
 		}
 	}
@@ -75,6 +85,7 @@ class Cubo extends THREE.Object3D {
 		super();
 
 		var dimension = 3;
+		this.puede_moverse = true;
 
 		this.identificador_cubo = id_cubo;
 
@@ -84,10 +95,19 @@ class Cubo extends THREE.Object3D {
 		this.cubo = new THREE.Mesh(geometria_cubo, material);
 		this.cubo.userData = this;
 		this.add(this.cubo);
+
 	}
 
 	getIdCubo() {
 		return this.identificador_cubo;
+	}
+
+	getPuedeMoverse(){
+		return this.puede_moverse;
+	}
+
+	setMaterial(material){
+		this.cubo.material = material;
 	}
 }
 
