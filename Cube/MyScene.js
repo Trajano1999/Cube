@@ -419,7 +419,7 @@ class MyScene extends THREE.Scene {
 		// En este caso la intensidad de la luz y si se muestran o no los ejes
 		this.guiControls = {
 			// En el contexto de una función   this   alude a la función
-			lightIntensity: 0.5,
+			lightIntensity: 0.4,
 			axisOnOff: true
 		}
 
@@ -473,7 +473,7 @@ class MyScene extends THREE.Scene {
 		this.add(this.spotLightAzul);
 
 		// luz Blanca
-		this.spotLightBlanca = new THREE.SpotLight(0xFFFFFF, this.guiControls.lightIntensity - 0.1);
+		this.spotLightBlanca = new THREE.SpotLight(0xFFFFFF, this.guiControls.lightIntensity);
 		this.spotLightBlanca.position.set(15, 44.2, 0);
 		this.spotLightBlanca.target = target_azul;
 	}
