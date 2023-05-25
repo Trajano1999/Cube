@@ -4,7 +4,6 @@ class Cubos extends THREE.Object3D {
 	constructor() {
 		super();
 
-
 		this.dimension = 3;
 		this.pickableObjects = [];
 		this.MAX_DISTANCIA_CHOQUE = 4;
@@ -56,30 +55,23 @@ class Cubos extends THREE.Object3D {
 	}
 
 	update() {
-		if ((Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo2.position.y) {
+		if ((Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo2.position.y)
 			this.hayChoque1 = true;
-		}
 
-		if (this.hesubido1 && (Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo2.position.y) {
+		if (this.hesubido1 && (Math.abs(this.cubo1.position.x - this.cubo2.position.x) + (Math.abs(this.cubo1.position.z - this.cubo2.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo2.position.y)
 			this.bajar1 = true;
-		}
 
-		if ((Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo3.position.y) {
+		if ((Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y == this.cubo3.position.y)
 			this.hayChoque2 = true;
-		}
 
-		if (this.hesubido2 && (Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo3.position.y) {
+		if (this.hesubido2 && (Math.abs(this.cubo1.position.x - this.cubo3.position.x) + (Math.abs(this.cubo1.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo1.position.y != this.cubo3.position.y)
 			this.bajar2 = true;
-		}
 
-
-		if ((Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y == this.cubo3.position.y) {
+		if ((Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) < this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y == this.cubo3.position.y)
 			this.hayChoque3 = true;
-		}
 
-		if (this.hesubido3 && (Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y != this.cubo3.position.y) {
+		if (this.hesubido3 && (Math.abs(this.cubo2.position.x - this.cubo3.position.x) + (Math.abs(this.cubo2.position.z - this.cubo3.position.z))) > this.MAX_DISTANCIA_CHOQUE && this.cubo2.position.y != this.cubo3.position.y)
 			this.bajar3 = true;
-		}
 	}
 
 	getPickableObjects() {

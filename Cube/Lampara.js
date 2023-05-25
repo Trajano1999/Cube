@@ -33,7 +33,7 @@ class Lampara extends THREE.Object3D {
 		this.add(this.lampara);
 	}
 
-	setMaterial(material){
+	setMaterial(material) {
 		this.latheObject.material = material;
 		this.bombilla.material = material;
 	}

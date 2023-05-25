@@ -68,19 +68,22 @@ class MyScene extends THREE.Scene {
 		this.axis = new THREE.AxesHelper(5);
 		this.add(this.axis);
 
-		// añadimos los elementos de Cube
+		// añadimos mesa
 		this.mesa = new Mesa();
 		this.add(this.mesa);
+
 		this.caja_englobante_mesa = new THREE.Box3();
 		this.caja_englobante_mesa.setFromObject(this.mesa);
 		this.cajas_englobantes.push(this.caja_englobante_mesa);
 
+		// añadimos suelo
 		this.suelo = new Suelo();
 		this.add(this.suelo);
 
-
+		// añadimos estructura
 		this.estructura = new Paredes();
 		this.add(this.estructura);
+
 		this.caja_englobante_pared_izq = new THREE.Box3();
 		this.caja_englobante_pared_izq.setFromObject(this.estructura.pared_izq);
 		this.cajas_englobantes.push(this.caja_englobante_pared_izq);
@@ -97,7 +100,7 @@ class MyScene extends THREE.Scene {
 		this.caja_englobante_pared_trasera.setFromObject(this.estructura.pared_trasera);
 		this.cajas_englobantes.push(this.caja_englobante_pared_trasera);
 
-
+		// añadimos cubos
 		this.cubos = new Cubos();
 		this.cubos.position.set(-25, 0, 25);
 		this.add(this.cubos);
@@ -114,12 +117,15 @@ class MyScene extends THREE.Scene {
 		this.caja_englobante_cubo3.setFromObject(this.cubos.cubo3);
 		this.cajas_englobantes.push(this.caja_englobante_cubo3);
 
+		// añadimos puerta
 		this.puerta = new Puerta();
 		this.puerta.position.set(75 / 2 + 0.1, 0, 0);
 		this.add(this.puerta);
 
+		// añadimos cajonera
 		this.cajonera = new Cajonera();
 		this.cajonera.position.set(25, 0, -33.5);
+
 		this.caja_englobante_cajonera = new THREE.Box3();
 		this.caja_englobante_cajonera.setFromObject(this.cajonera);
 		this.cajas_englobantes.push(this.caja_englobante_cajonera);
@@ -129,29 +135,36 @@ class MyScene extends THREE.Scene {
 		this.cajonera.cajon.add(this.llave);
 		this.add(this.cajonera);
 
+		// añadimos mosca
 		this.mosca = new Mosca();
 		this.add(this.mosca);
 
+		// añadimos botón
 		this.boton = new Boton();
 		this.boton.position.set(-75 / 2, 20, 0);
 		this.add(this.boton);
 
+		// añadimos reloj
 		this.reloj = new Reloj();
 		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
+
 		this.caja_englobante_reloj = new THREE.Box3();
 		this.caja_englobante_reloj.setFromObject(this.reloj);
 		this.cajas_englobantes.push(this.caja_englobante_reloj);
 
+		// añadimos botón luces
 		this.botonLuces = new BotonLuces();
 		this.botonLuces.position.set(37.5, 12, 23);
 		this.add(this.botonLuces);
 
+		// añadimos lámpara amarilla
 		this.material_lampara_amarilla = new THREE.MeshLambertMaterial({ color: 0xFFFF00, emissive: true, emissiveIntensity: 1 });
 		this.lamparaAmarilla = new Lampara(this.material_lampara_amarilla);
 		this.lamparaAmarilla.position.set(-15, 41.2, 0);
 		this.add(this.lamparaAmarilla);
 
+		// añadimos lámpara azul
 		this.material_lampara_azul = new THREE.MeshLambertMaterial({ color: 0x1A4EE3, emissive: true, emissiveIntensity: 1 });
 		this.lamparaAzul = new Lampara(this.material_lampara_azul);
 		this.lamparaAzul.position.set(15, 41.2, 0);
@@ -159,6 +172,7 @@ class MyScene extends THREE.Scene {
 
 		this.material_lampara_blanca = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, emissive: true, emissiveIntensity: 1 });
 
+		// añadimos cilindro trasparente
 		this.cilindro_transparente = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.1, 12, 30), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }));
 		this.cilindro_transparente.position.set(32, 6, 34);
 		this.add(this.cilindro_transparente);
@@ -166,6 +180,7 @@ class MyScene extends THREE.Scene {
 		this.caja_englobante_cilindro = new THREE.Box3();
 		this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 
+		// mensaje inicio
 		alert(this.mensaje_inicial);
 	}
 
