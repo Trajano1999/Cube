@@ -18,12 +18,14 @@ import { Boton } from './Boton.js'
 import { Reloj } from './Reloj.js'
 import { BotonLuces } from './BotonLuces.js'
 import { Lampara } from './Lampara.js'
+import { Suelo } from './Suelo.js'
 
 // ─── Clase Escena ───────────────────────────────────────────────────────────
 
 class MyScene extends THREE.Scene {
 	constructor(myCanvas) {
 		super();
+		this.cajas_englobantes = [];
 
 		// mensajes
 		this.mensaje_inicial = "¡¡ BIENVENIDO A CUBE !!\nPara poder salir de esta habitación necesitarás resolver tres pruebas.\nLa primera prueba consiste en apilar los cubos en orden RGB. \nBuena suerte.";
@@ -69,13 +71,48 @@ class MyScene extends THREE.Scene {
 		// añadimos los elementos de Cube
 		this.mesa = new Mesa();
 		this.add(this.mesa);
+		this.caja_englobante_mesa = new THREE.Box3();
+		this.caja_englobante_mesa.setFromObject(this.mesa);
+		this.cajas_englobantes.push(this.caja_englobante_mesa);
+
+		this.suelo = new Suelo();
+		this.add(this.suelo);
+
 
 		this.estructura = new Paredes();
 		this.add(this.estructura);
+		this.caja_englobante_pared_izq = new THREE.Box3();
+		this.caja_englobante_pared_izq.setFromObject(this.estructura.pared_izq);
+		this.cajas_englobantes.push(this.caja_englobante_pared_izq);
+
+		this.caja_englobante_pared_der = new THREE.Box3();
+		this.caja_englobante_pared_der.setFromObject(this.estructura.pared_der);
+		this.cajas_englobantes.push(this.caja_englobante_pared_der);
+
+		this.caja_englobante_pared_delantera = new THREE.Box3();
+		this.caja_englobante_pared_delantera.setFromObject(this.estructura.pared_delantera);
+		this.cajas_englobantes.push(this.caja_englobante_pared_delantera);
+
+		this.caja_englobante_pared_trasera = new THREE.Box3();
+		this.caja_englobante_pared_trasera.setFromObject(this.estructura.pared_trasera);
+		this.cajas_englobantes.push(this.caja_englobante_pared_trasera);
+
 
 		this.cubos = new Cubos();
 		this.cubos.position.set(-25, 0, 25);
 		this.add(this.cubos);
+
+		this.caja_englobante_cubo1 = new THREE.Box3();
+		this.caja_englobante_cubo1.setFromObject(this.cubos.cubo1);
+		this.cajas_englobantes.push(this.caja_englobante_cubo1);
+
+		this.caja_englobante_cubo2 = new THREE.Box3();
+		this.caja_englobante_cubo2.setFromObject(this.cubos.cubo2);
+		this.cajas_englobantes.push(this.caja_englobante_cubo2);
+
+		this.caja_englobante_cubo3 = new THREE.Box3();
+		this.caja_englobante_cubo3.setFromObject(this.cubos.cubo3);
+		this.cajas_englobantes.push(this.caja_englobante_cubo3);
 
 		this.puerta = new Puerta();
 		this.puerta.position.set(75 / 2 + 0.1, 0, 0);
@@ -83,6 +120,9 @@ class MyScene extends THREE.Scene {
 
 		this.cajonera = new Cajonera();
 		this.cajonera.position.set(25, 0, -33.5);
+		this.caja_englobante_cajonera = new THREE.Box3();
+		this.caja_englobante_cajonera.setFromObject(this.cajonera);
+		this.cajas_englobantes.push(this.caja_englobante_cajonera);
 
 		this.llave = new Llave();
 		this.llave.position.set(0, 8, 1);
@@ -99,18 +139,32 @@ class MyScene extends THREE.Scene {
 		this.reloj = new Reloj();
 		this.reloj.position.set(0, 20, -75 / 2 + 0.1 + 4);
 		this.add(this.reloj);
+		this.caja_englobante_reloj = new THREE.Box3();
+		this.caja_englobante_reloj.setFromObject(this.reloj);
+		this.cajas_englobantes.push(this.caja_englobante_reloj);
 
 		this.botonLuces = new BotonLuces();
 		this.botonLuces.position.set(37.5, 12, 23);
 		this.add(this.botonLuces);
 
-		this.lamparaAmarilla = new Lampara();
+		this.material_lampara_amarilla = new THREE.MeshLambertMaterial({ color: 0xFFFF00, emissive: true, emissiveIntensity: 1 });
+		this.lamparaAmarilla = new Lampara(this.material_lampara_amarilla);
 		this.lamparaAmarilla.position.set(-15, 41.2, 0);
 		this.add(this.lamparaAmarilla);
 
-		this.lamparaAzul = new Lampara();
+		this.material_lampara_azul = new THREE.MeshLambertMaterial({ color: 0x1A4EE3, emissive: true, emissiveIntensity: 1 });
+		this.lamparaAzul = new Lampara(this.material_lampara_azul);
 		this.lamparaAzul.position.set(15, 41.2, 0);
 		this.add(this.lamparaAzul);
+
+		this.material_lampara_blanca = new THREE.MeshLambertMaterial({ color: 0xFFFFFF, emissive: true, emissiveIntensity: 1 });
+
+		this.cilindro_transparente = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.1, 12, 30), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }));
+		this.cilindro_transparente.position.set(32, 6, 34);
+		this.add(this.cilindro_transparente);
+
+		this.caja_englobante_cilindro = new THREE.Box3();
+		this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 
 		alert(this.mensaje_inicial);
 	}
@@ -153,40 +207,35 @@ class MyScene extends THREE.Scene {
 
 	// ─── Gestor Espacio ──────────────────────────────────────────────────────
 
-	testColision(donde_estoy, a_donde_miro) {
-		var bool = false;
-
-		/*if (donde_estoy.x >= -37) {
-			if (a_donde_miro.x < 0 && a_donde_miro.x > -1 && a_donde_miro.x < 1) {
-				bool = false;
+	testColision() {
+		for (var i = 0; i < this.cajas_englobantes.length; i++) {
+			if (this.cajas_englobantes[i].intersectsBox(this.caja_englobante_cilindro)) {
+				return true;
 			}
-		}*/
-
-		return bool;
+		}
+		return false;
 	}
 
 	// ─── Gestor Teclas ──────────────────────────────────────────────────────
 
 	onKeyDown(event) {
 		var tecla = event.wich || event.keyCode;
-		if (!this.testColision(this.a, this.b)) {
-			switch (tecla) {
-				case 38: case 87: // Flecha arriba
-					this.adelante = true;
-					break;
-				case 40: case 83: // Flecha abajo
-					this.atras = true;
-					break;
-				case 37: case 65: // Flecha izquierda
-					this.izq = true;
-					break;
-				case 39: case 68: // Flecha derecha
-					this.der = true;
-					break;
-				case 77: // letra M
-					this.cameraControl.unlock();
-					break;
-			}
+		switch (tecla) {
+			case 38: case 87: // Flecha arriba
+				this.adelante = true;
+				break;
+			case 40: case 83: // Flecha abajo
+				this.atras = true;
+				break;
+			case 37: case 65: // Flecha izquierda
+				this.izq = true;
+				break;
+			case 39: case 68: // Flecha derecha
+				this.der = true;
+				break;
+			case 77: // letra M
+				this.cameraControl.unlock();
+				break;
 		}
 	}
 
@@ -269,8 +318,6 @@ class MyScene extends THREE.Scene {
 
 			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón solo si no tiene cubos encima
 			if (!this.hayCuboEncima(this.cubo_seleccionado)) {
-				//this.cubo_seleccionado.position.x += deltaX;
-				//this.cubo_seleccionado.position.z += deltaY;
 				this.cubo_seleccionado.position.add(desplazamiento);
 
 				if (this.cubos.hayChoque1 == true) {
@@ -381,6 +428,12 @@ class MyScene extends THREE.Scene {
 		// botón luces
 		if (this.pickedBotonLuces.length > 0) {
 			this.luz_blanca_encendida = !this.luz_blanca_encendida;
+			if (this.luz_blanca_encendida) {
+				this.lamparaAzul.setMaterial(this.material_lampara_blanca);
+			}
+			else {
+				this.lamparaAzul.setMaterial(this.material_lampara_azul);
+			}
 		}
 	}
 
@@ -562,16 +615,61 @@ class MyScene extends THREE.Scene {
 			a_donde_miro.y = 0;
 			a_donde_miro.normalize();
 
-			if (!this.testColision(this.camera.position, a_donde_miro)) {
-				if (this.adelante)
-					this.cameraControl.moveForward(1);
-				if (this.atras)
-					this.cameraControl.moveForward(-1);
-				if (this.izq)
-					this.cameraControl.moveRight(-1);
-				if (this.der)
-					this.cameraControl.moveRight(1);
+			if (this.adelante) {
+				this.cameraControl.moveForward(1 / 2);
+				this.cilindro_transparente.position.x += a_donde_miro.x / 2;
+				this.cilindro_transparente.position.z += a_donde_miro.z / 2;
+				this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+
+				if (this.testColision()) {
+					this.cameraControl.moveForward(-1 / 2);
+					this.cilindro_transparente.position.x -= a_donde_miro.x / 2;
+					this.cilindro_transparente.position.z -= a_donde_miro.z / 2;
+					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+				}
+
 			}
+			if (this.atras) {
+				this.cameraControl.moveForward(-1 / 2);
+				this.cilindro_transparente.position.x -= a_donde_miro.x / 2;
+				this.cilindro_transparente.position.z -= a_donde_miro.z / 2;
+				this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+
+				if (this.testColision()) {
+					this.cameraControl.moveForward(1 / 2);
+					this.cilindro_transparente.position.x += a_donde_miro.x / 2;
+					this.cilindro_transparente.position.z += a_donde_miro.z / 2;
+					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+				}
+			}
+			if (this.izq) {
+				this.cameraControl.moveRight(-1 / 2);
+				this.cilindro_transparente.position.x += a_donde_miro.z / 2;
+				this.cilindro_transparente.position.z -= a_donde_miro.x / 2;
+				this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+
+				if (this.testColision()) {
+					this.cameraControl.moveRight(1 / 2);
+					this.cilindro_transparente.position.x -= a_donde_miro.z / 2;
+					this.cilindro_transparente.position.z += a_donde_miro.x / 2;
+					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+				}
+
+			}
+			if (this.der) {
+				this.cameraControl.moveRight(1 / 2);
+				this.cilindro_transparente.position.x -= a_donde_miro.z / 2;
+				this.cilindro_transparente.position.z += a_donde_miro.x / 2;
+				this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+
+				if (this.testColision()) {
+					this.cameraControl.moveRight(-1 / 2);
+					this.cilindro_transparente.position.x += a_donde_miro.z / 2;
+					this.cilindro_transparente.position.z -= a_donde_miro.x / 2;
+					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
+				}
+			}
+
 			// console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
 		}
 

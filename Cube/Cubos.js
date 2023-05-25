@@ -9,9 +9,14 @@ class Cubos extends THREE.Object3D {
 		this.pickableObjects = [];
 		this.MAX_DISTANCIA_CHOQUE = 4;
 
-		var material1 = new THREE.MeshPhongMaterial({ color: 0xff0000 });	//cubo rojo
-		var material2 = new THREE.MeshPhongMaterial({ color: 0x00ff00 });	//cubo verde
-		var material3 = new THREE.MeshPhongMaterial({ color: 0x0000ff });	//cubo azul
+		var loader = new THREE.TextureLoader();
+		var text_roja = loader.load('../imgs/textura-rojo.jpg');
+		var text_verde = loader.load('../imgs/textura-verde.jpg');
+		var text_azul = loader.load('../imgs/textura-azul.jpg');
+
+		var material1 = new THREE.MeshPhongMaterial({ color: 0xff0000, map: text_roja });	//cubo rojo
+		var material2 = new THREE.MeshPhongMaterial({ color: 0x00ff00, map: text_verde });	//cubo verde
+		var material3 = new THREE.MeshPhongMaterial({ color: 0x0000ff, map: text_azul });	//cubo azul
 
 		this.cubo1 = new Cubo(1, material1);
 		this.cubo2 = new Cubo(2, material2);
@@ -41,7 +46,9 @@ class Cubos extends THREE.Object3D {
 	}
 
 	cambiarColor() {
-		var nuevomaterial = new THREE.MeshPhongMaterial({ color: 0xff0080 });
+		var loader = new THREE.TextureLoader();
+		var text_rosa = loader.load('../imgs/textura-rosa.jpg');
+		var nuevomaterial = new THREE.MeshPhongMaterial({ map: text_rosa });
 		//var nuevomaterial = new THREE.MeshNormalMaterial();
 		this.cubo1.setMaterial(nuevomaterial);
 		this.cubo2.setMaterial(nuevomaterial);

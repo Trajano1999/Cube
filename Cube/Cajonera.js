@@ -26,8 +26,8 @@ class Cajonera extends THREE.Object3D {
 
 		// creamos los 3 primeros cajones
 		var cajonGeom = new THREE.BoxGeometry(11.5, 2, 8);
-		var cajonMat1 = new THREE.MeshPhongMaterial({ color: 0xB3640B });
-		var cajonMat2 = new THREE.MeshPhongMaterial({ color: 0x8C510E });
+		var cajonMat1 = new THREE.MeshPhongMaterial({ color: 0xB3640B, map: textDecoracion  });
+		var cajonMat2 = new THREE.MeshPhongMaterial({ color: 0x8C510E, map: textDecoracion  });
 		var cajon1 = new THREE.Mesh(cajonGeom, cajonMat1);
 		var cajon2 = new THREE.Mesh(cajonGeom, cajonMat2);
 		var cajon3 = cajon1.clone();

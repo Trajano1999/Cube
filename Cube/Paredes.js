@@ -14,29 +14,28 @@ class Paredes extends THREE.Object3D {
 		geometry_suelo.translate(0, -0.1, 0);
 		var texture = new THREE.TextureLoader().load('../imgs/estuco.jpg');
 		var material = new THREE.MeshPhongMaterial({ map: texture });
-		var suelo = new THREE.Mesh(geometry_suelo, material);
-		var techo = suelo.clone();
+		var techo = new THREE.Mesh(geometry_suelo, material);
 		techo.position.set(0, 50, 0);
 
 		// construimos las paredes
 		var geometry_paredes = new THREE.BoxGeometry(this.dimension_suelo, 0.2, this.dimension_pared);
-		var pared_izq = new THREE.Mesh(geometry_paredes, material);
-		var pared_der = pared_izq.clone();
-		var pared_trasera = pared_izq.clone();
+		this.pared_izq = new THREE.Mesh(geometry_paredes, material);
+		this.pared_der = this.pared_izq.clone();
+		this.pared_trasera = this.pared_izq.clone();
 
-		pared_izq.rotation.z = -Math.PI / 2;
-		pared_izq.rotation.x = -Math.PI / 2;
-		pared_izq.position.set(-this.dimension_suelo / 2, this.dimension_pared / 2, 0);
+		this.pared_izq.rotation.z = -Math.PI / 2;
+		this.pared_izq.rotation.x = -Math.PI / 2;
+		this.pared_izq.position.set(-this.dimension_suelo / 2, this.dimension_pared / 2, 0);
 
-		pared_der.rotation.z = Math.PI / 2;
-		pared_der.rotation.x = -Math.PI / 2;
-		pared_der.position.set(this.dimension_suelo / 2, this.dimension_pared / 2, 0);
+		this.pared_der.rotation.z = Math.PI / 2;
+		this.pared_der.rotation.x = -Math.PI / 2;
+		this.pared_der.position.set(this.dimension_suelo / 2, this.dimension_pared / 2, 0);
 
-		pared_trasera.rotation.x = Math.PI / 2;
-		pared_trasera.position.set(0, this.dimension_pared / 2, -this.dimension_suelo / 2);
+		this.pared_trasera.rotation.x = Math.PI / 2;
+		this.pared_trasera.position.set(0, this.dimension_pared / 2, -this.dimension_suelo / 2);
 
-		var pared_delantera = pared_trasera.clone();
-		pared_delantera.position.z += this.dimension_suelo;
+		this.pared_delantera = this.pared_trasera.clone();
+		this.pared_delantera.position.z += this.dimension_suelo;
 
 		// aplicamos csg
 		var geometria_puerta = new THREE.BoxGeometry(1, 20, 10);
@@ -46,17 +45,16 @@ class Paredes extends THREE.Object3D {
 		puerta.position.set(75 / 2 + 0.1, 0, 5);
 
 		var csg = new CSG();
-		csg.union([pared_der]);
+		csg.union([this.pared_der]);
 		csg.subtract([puerta]);
 
 		// Que no se nos olvide añadirlo a la escena, que en este caso es  this
 		var estructura = new THREE.Object3D();
-		estructura.add(suelo);
-		estructura.add(pared_izq);
-		estructura.add(pared_trasera);
+		estructura.add(this.pared_izq);
+		estructura.add(this.pared_trasera);
 		estructura.add(techo);
 		estructura.add(csg.toMesh());
-		estructura.add(pared_delantera);
+		estructura.add(this.pared_delantera);
 		this.add(estructura);
 	}
 

@@ -9,7 +9,7 @@ class Mesa extends THREE.Object3D {
 
 		var geometria_tablero = new THREE.BoxGeometry(15, 0.2, 10);
 		geometria_tablero.translate(0, -0.1, 0);
-		var geometria_pata = new THREE.CylinderGeometry(0.2, 0.2, this.altura_mesa, 10);
+		var geometria_pata = new THREE.CylinderGeometry(0.2, 0.2, this.altura_mesa, 4);
 		geometria_pata.translate(0, this.altura_mesa / 2, 0);
 
 		var loader = new THREE.TextureLoader();
@@ -20,9 +20,8 @@ class Mesa extends THREE.Object3D {
 		var tablero = new THREE.Mesh(geometria_tablero, material_tablero);
 		tablero.position.y = this.altura_mesa;
 
-		var material = new THREE.MeshPhongMaterial({ color: 0x804000 });
 
-		var pata_izq_del = new THREE.Mesh(geometria_pata, material);
+		var pata_izq_del = new THREE.Mesh(geometria_pata, material_tablero);
 		var pata_izq_tras = pata_izq_del.clone();
 		var pata_der_del = pata_izq_del.clone();
 		var pata_der_tras = pata_izq_del.clone();
@@ -61,7 +60,9 @@ class MyTaza extends THREE.Object3D {
 	constructor() {
 		super();
 
-		var material = new THREE.MeshNormalMaterial();
+		var loader = new THREE.TextureLoader();
+		var textDecoracion = loader.load('../imgs/textura-ceramica.jpg');
+		var material = new THREE.MeshPhongMaterial({ map: textDecoracion });
 
 		var cilExt = new THREE.CylinderGeometry(5, 5, 10, 24, 1);
 		var cilInt = new THREE.CylinderGeometry(4.7, 4.7, 10, 24, 1);
@@ -99,7 +100,9 @@ class MyCorazonBarrido extends THREE.Object3D {
 		var geometry = new THREE.ExtrudeGeometry(this.rotateShape(shape, Math.PI, 100), options);
 		geometry.scale(0.2, 0.2, 0.2);
 
-		var material = new THREE.MeshNormalMaterial();
+		var loader = new THREE.TextureLoader();
+		var textDecoracion = loader.load('../imgs/otra-madera.jpg');
+		var material = new THREE.MeshPhongMaterial({ map: textDecoracion });
 		var heart = new THREE.Mesh(geometry, material);
 		this.add(heart);
 	}
