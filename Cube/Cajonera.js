@@ -1,7 +1,6 @@
 import * as THREE from '../libs/three.module.js'
 import { CSG } from '../libs/CSG-v2.js'
-import { MTLLoader } from '../libs/MTLLoader.js'
-import { OBJLoader } from '../libs/OBJLoader.js'
+import * as TWEEN from '../libs/tween.esm.js'
 
 class Cajonera extends THREE.Object3D {
 	constructor() {
@@ -70,11 +69,44 @@ class Cajonera extends THREE.Object3D {
 		this.add(armario);
 	}
 
-	update(cajon_cerrado) {
-		if (cajon_cerrado)
-			this.cajon.position.set(0, 0, 5);
-		else
-			this.cajon.position.set(0, 0, 0);
+	update() {
+		TWEEN.update();
+	}
+
+	animacionApertura() {
+		var origen = { t: 0 };
+		var destino = { t: 1 };
+		var tiempoRecorrido = 1 * 1000; // 1s
+
+		var movimiento = new TWEEN.Tween(origen)
+			.to(destino, tiempoRecorrido)
+			.easing(TWEEN.Easing.Quadratic.In)
+			.onUpdate(() => {
+				this.cajon.position.set(0, 0, 5 * origen.t);
+			})
+			.onComplete(() => {
+				origen.t = 0;
+			})
+
+		movimiento.start();
+	}
+
+	animacionCierre() {
+		var origen = { t: 1 };
+		var destino = { t: 0 };
+		var tiempoRecorrido = 1 * 1000; // 1s
+
+		var movimiento = new TWEEN.Tween(origen)
+			.to(destino, tiempoRecorrido)
+			.easing(TWEEN.Easing.Quadratic.In)
+			.onUpdate(() => {
+				this.cajon.position.set(0, 0, 5 * origen.t);
+			})
+			.onComplete(() => {
+				origen.t = 0;
+			})
+
+		movimiento.start();
 	}
 
 	getPickableObjects() {

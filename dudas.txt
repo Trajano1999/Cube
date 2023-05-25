@@ -1,7 +1,6 @@
 Falta por hacer :
 	- Límites de paredes
 	- Colisiones
-	- Movimiento del cajón
 
 Entrega :
 	- El documento de diseño debe incluir un diagrama de clases, el modelo jerárquico del objeto articulado que se incluye y la descripción de los algoritmos más importantes del juego.

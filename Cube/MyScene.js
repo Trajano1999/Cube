@@ -24,6 +24,14 @@ import { Lampara } from './Lampara.js'
 class MyScene extends THREE.Scene {
 	constructor(myCanvas) {
 		super();
+
+		// mensajes
+		this.mensaje_inicial = "¡¡ BIENVENIDO A CUBE !!\nPara poder salir de esta habitación necesitarás resolver tres pruebas.\nLa primera prueba consiste en apilar los cubos en orden RGB. \nBuena suerte.";
+		this.mensaje_primera_prueba_conseguida = "HAS CONSEGUIDO SUPERAR LA PRIMERA PRUEBA!\nAhora tienes que pulsar 3 veces el botón que está en la pared.";
+		this.mensaje_segunda_prueba_conseguida = "HAS CONSEGUIDO SUPERAR LA SEGUNDA PRUEBA!\nAhora tienes que encontrar la llave escondida para abrir la puerta y poder salir.";
+		this.mensaje_cube_terminado = "HAS RESUELTO TODAS LAS PRUEBAS!\nAhora puedes abrir la puerta y salir de la habitación. Enhorabuena!";
+
+		// booleanos de control
 		this.cubos_seleccionados = false;
 		this.boton_seleccionado = false;
 		this.llave_seleccionada = false;
@@ -104,7 +112,7 @@ class MyScene extends THREE.Scene {
 		this.lamparaAzul.position.set(15, 41.2, 0);
 		this.add(this.lamparaAzul);
 
-		alert("¡¡ BIENVENIDO A CUBE !!\nPara poder salir de esta habitación necesitarás resolver tres pruebas.\nLa primera prueba consiste en apilar los cubos en orden RGB. \nBuena suerte.");
+		alert(this.mensaje_inicial);
 	}
 
 	// ─── Stats ──────────────────────────────────────────────────────────────
@@ -206,20 +214,16 @@ class MyScene extends THREE.Scene {
 	// ─── Gestor del Ratón  ──────────────────────────────────────────────────
 
 	hayCuboEncima(cubo) {
-
 		if (this.cubos.cubo1.position.y > cubo.position.y && (Math.abs(this.cubos.cubo1.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo1.position.z - cubo.position.z))) < 1.5)
 			return true;
 
-
 		if (this.cubos.cubo2.position.y > cubo.position.y && (Math.abs(this.cubos.cubo2.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo2.position.z - cubo.position.z))) < 1.5)
 			return true;
-
 
 		if (this.cubos.cubo3.position.y > cubo.position.y && (Math.abs(this.cubos.cubo3.position.x - cubo.position.x) + (Math.abs(this.cubos.cubo3.position.z - cubo.position.z))) < 1.5)
 			return true;
 
 		return false;
-
 	}
 
 	estanAlineados() {
@@ -250,9 +254,6 @@ class MyScene extends THREE.Scene {
 			const desplazamiento = miroHacia.clone().multiplyScalar(desplazamientoy);
 			desplazamiento.y = 0;
 			desplazamiento.add(miroHacia.clone().cross(new THREE.Vector3(0, -1, 0)).multiplyScalar(desplazamientox));
-
-
-
 
 			// Calcula la posición del ratón en la ventana
 			const mouseX = event.clientX;
@@ -307,7 +308,6 @@ class MyScene extends THREE.Scene {
 				}
 			}
 
-
 			// Actualiza la posición del ratón
 			this.mouseX = mouseX;
 			this.mouseY = mouseY;
@@ -351,8 +351,13 @@ class MyScene extends THREE.Scene {
 
 		// cajón
 		if (this.pickedCajon.length > 0) {
-			this.cajonera.update(this.cajonCerrado);
-			this.cajonCerrado = !this.cajonCerrado;
+			if (this.cajonCerrado) {
+				this.cajonera.animacionApertura();
+				this.cajonCerrado = !this.cajonCerrado;
+			} else {
+				this.cajonera.animacionCierre();
+				this.cajonCerrado = !this.cajonCerrado;
+			}
 		}
 
 		// llave
@@ -384,7 +389,7 @@ class MyScene extends THREE.Scene {
 			if (this.cubos.cubo1.position.y == 6 && this.cubos.cubo2.position.y == 3 && this.cubos.cubo3.position.y == 0 && this.estanAlineados() && !this.primera_prueba_hecha) {
 				this.primera_prueba_hecha = true;
 				this.cubos.cambiarColor();
-				alert("HAS CONSEGUIDO SUPERAR LA PRIMERA PRUEBA!\nAhora tienes que pulsar 3 veces el botón que está en la pared.");
+				alert(this.mensaje_primera_prueba_conseguida);
 			}
 			this.cubos_seleccionados = false;
 		}
@@ -392,14 +397,14 @@ class MyScene extends THREE.Scene {
 		if (this.boton_seleccionado) {
 			this.boton_seleccionado = false;
 			if (this.seg_prueba_hecha && !this.mensaje2_mostrado) {
-				alert("HAS CONSEGUIDO SUPERAR LA SEGUNDA PRUEBA!\nAhora tienes que encontrar la llave escondida para abrir la puerta y poder salir.");
+				alert(this.mensaje_segunda_prueba_conseguida);
 				this.mensaje2_mostrado = true;
 			}
 		}
 
 		if (this.llave_seleccionada) {
 			this.llave_seleccionada = false;
-			alert("HAS RESUELTO TODAS LAS PRUEBAS!\nAhora puedes abrir la puerta y salir de la habitación. Enhorabuena!");
+			alert(this.mensaje_cube_terminado);
 		}
 	}
 
@@ -602,6 +607,4 @@ $(function () {
 
 	// Que no se nos olvide, la primera visualización.
 	scene.update();
-
-
 });
