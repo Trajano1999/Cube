@@ -31,7 +31,8 @@ class MyScene extends THREE.Scene {
 		this.mensaje_inicial = "¡¡ BIENVENIDO A CUBE !!\nPara poder salir de esta habitación necesitarás resolver tres pruebas.\nLa primera prueba consiste en apilar los cubos en orden RGB. \nBuena suerte.";
 		this.mensaje_primera_prueba_conseguida = "HAS CONSEGUIDO SUPERAR LA PRIMERA PRUEBA!\nAhora tienes que pulsar 3 veces el botón que está en la pared.";
 		this.mensaje_segunda_prueba_conseguida = "HAS CONSEGUIDO SUPERAR LA SEGUNDA PRUEBA!\nAhora tienes que encontrar la llave escondida para abrir la puerta y poder salir.";
-		this.mensaje_cube_terminado = "HAS RESUELTO TODAS LAS PRUEBAS!\nAhora puedes abrir la puerta y salir de la habitación. Enhorabuena!";
+		this.mensaje_cube_terminado = "HAS RESUELTO LA ÚLTIMA PRUEBA!\nAhora ya puedes abrir la puerta y salir de la habitación.";
+		this.mesaje_final = "HAS CONSEGUIDO ESCAPAR !\nEnhorabuena, YA ERES LIBRE.";
 
 		// booleanos de control
 		this.cubos_seleccionados = false;
@@ -45,6 +46,7 @@ class MyScene extends THREE.Scene {
 		this.seg_prueba_hecha = false;
 		this.mensaje2_mostrado = false;
 		this.luz_blanca_encendida = false;
+		this.mensaje_final_mostrado = false;
 
 		//this.mouse = new THREE.Vector2();
 		this.raycaster = new THREE.Raycaster();
@@ -686,6 +688,12 @@ class MyScene extends THREE.Scene {
 					this.cilindro_transparente.position.z -= a_donde_miro.x / 2;
 					this.caja_englobante_cilindro.setFromObject(this.cilindro_transparente);
 				}
+			}
+
+			// mensaje final
+			if (this.puerta_abierta && this.camera.position.x > 45 && !this.mensaje_final_mostrado){
+				alert(this.mesaje_final);
+				this.mensaje_final_mostrado = true;
 			}
 
 			// console.log("donde miro : (", a_donde_miro.x, ",", a_donde_miro.z, ")", "\ndonde estoy : (", this.camera.position.x, ",", this.camera.position.z, ")");
