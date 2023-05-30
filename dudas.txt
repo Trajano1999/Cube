@@ -1,2 +1,0 @@
-Falta por hacer :
-	- Colisiones de los cubos
