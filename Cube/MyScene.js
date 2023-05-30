@@ -88,9 +88,17 @@ class MyScene extends THREE.Scene {
 		this.caja_englobante_pared_izq.setFromObject(this.estructura.pared_izq);
 		this.cajas_englobantes.push(this.caja_englobante_pared_izq);
 
-		this.caja_englobante_pared_der = new THREE.Box3();
-		this.caja_englobante_pared_der.setFromObject(this.estructura.pared_der);
-		this.cajas_englobantes.push(this.caja_englobante_pared_der);
+		this.caja_englobante_pared_der_trozo1 = new THREE.Box3();
+		this.caja_englobante_pared_der_trozo1.setFromObject(this.estructura.trozo1);
+		this.cajas_englobantes.push(this.caja_englobante_pared_der_trozo1);
+
+		this.caja_englobante_pared_der_trozo2 = new THREE.Box3();
+		this.caja_englobante_pared_der_trozo2.setFromObject(this.estructura.trozo2);
+		this.cajas_englobantes.push(this.caja_englobante_pared_der_trozo2);
+
+		this.caja_englobante_pared_der_trozo3 = new THREE.Box3();
+		this.caja_englobante_pared_der_trozo3.setFromObject(this.estructura.trozo3);
+		this.cajas_englobantes.push(this.caja_englobante_pared_der_trozo3);
 
 		this.caja_englobante_pared_delantera = new THREE.Box3();
 		this.caja_englobante_pared_delantera.setFromObject(this.estructura.pared_delantera);
@@ -121,6 +129,9 @@ class MyScene extends THREE.Scene {
 		this.puerta = new Puerta();
 		this.puerta.position.set(75 / 2 + 0.1, 0, 0);
 		this.add(this.puerta);
+		this.caja_englobante_puerta = new THREE.Box3();
+		this.caja_englobante_puerta.setFromObject(this.puerta);
+		this.cajas_englobantes.push(this.caja_englobante_puerta);
 
 		// añadimos cajonera
 		this.cajonera = new Cajonera();
@@ -324,13 +335,6 @@ class MyScene extends THREE.Scene {
 			const mouseX = event.clientX;
 			const mouseY = event.clientY;
 
-			// Calcula el desplazamiento del ratón desde la última posición
-			var deltaX = mouseX - this.mouseX;
-			var deltaY = mouseY - this.mouseY;
-
-			deltaX = deltaX / 30;
-			deltaY = deltaY / 30;
-
 			// Actualiza la posición del cubo seleccionado en función del desplazamiento del ratón solo si no tiene cubos encima
 			if (!this.hayCuboEncima(this.cubo_seleccionado)) {
 				this.cubo_seleccionado.position.add(desplazamiento);
@@ -436,6 +440,7 @@ class MyScene extends THREE.Scene {
 			if (this.llaveCogida && !this.puerta_abierta) {
 				this.puerta.animacion();
 				this.puerta_abierta = true;
+				this.cajas_englobantes.splice(10, 1);
 			}
 		}
 
@@ -444,7 +449,7 @@ class MyScene extends THREE.Scene {
 			this.luz_blanca_encendida = !this.luz_blanca_encendida;
 			if (this.luz_blanca_encendida)
 				this.lamparaAzul.setMaterial(this.material_lampara_blanca);
-			else 
+			else
 				this.lamparaAzul.setMaterial(this.material_lampara_azul);
 		}
 	}
