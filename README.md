@@ -8,7 +8,7 @@ Grupo formado por:
 
 ## Ejecución
 
-Para ejecutarlo, acceder a la carpeta `Cube` e introducir en la terminal el siguiente comando : 
+Para ejecutarlo en **Windows**, acceder a la carpeta `Cube` e introducir en la terminal el siguiente comando : 
 
 `python -m http.server`
 
