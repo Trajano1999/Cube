@@ -12,7 +12,7 @@ Para ejecutarlo en **Windows**, acceder a la carpeta `Cube` e introducir en la t
 
 `python -m http.server`
 
-A continuación acceder a cualquier navegador a la dirección :
+A continuación acceder a cualquier navegador a la dirección
 
 `localhost:8000`
 
