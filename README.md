@@ -24,10 +24,10 @@ Además, una mosca estará siempre sobrevolando la habitación, siguiendo una tr
 
 Para ejecutarlo en **Windows**, se debe introducir en la terminal el siguiente comando:
 
-`python -m http.server`
+``python -m http.server``
 
 A continuación, acceder desde cualquier navegador a la dirección:
 
-`localhost:8000`
+``localhost:8000``
 
 ¡Y disfruta del juego!
