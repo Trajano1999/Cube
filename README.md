@@ -8,13 +8,13 @@ Grupo formado por:
 
 ## Descripción
 
-Este juego consiste en un escape room virtual, en el que el protagonista se encuentra atrapado en una habitación de la que sólo puede escapar si supera 3 duras pruebas.
+Este juego consiste en un escape room virtual, en el que el protagonista se encuentra atrapado en una habitación de la que sólo puede escapar si supera tres duras pruebas.
 
 La estancia es un espacio cerrado delimitado por cuatro paredes, un techo y un suelo. En el centro de la habitación se encuentra una mesa sobre la cual se disponen diversos objetos construidos mediante distintas técnicas, como una taza o una botella de Coca-Cola.
 
 En el techo se sitúan dos luces, una amarilla y otra azul. Para comenzar, es necesario accionar un interruptor ubicado en la pared donde aparece inicialmente el jugador, lo que transformará la luz azul en blanca. También hay un reloj de pared, cuyo péndulo se balancea de manera continua, constituyendo un objeto con movimiento articulado en la escena.
 
-El primer desafío consiste en recoger tres cubos dispersos en el suelo y apilarlos en un orden específico (rojo, verde y azul) para avanzar al siguiente reto. La segunda prueba requiere pulsar un botón un número exacto de veces; dicho botón está fijado en una de las paredes. Finalmente, el tercer desafío implica resolver un enigma para encontrar una llave que se halla en un cajón de un mueble. Una vez obtenida la llave, el jugador podrá hacer clic en el pomo de la puerta y salir del escape room.
+El primer desafío consiste en recoger tres cubos dispersos en el suelo y apilarlos en un orden específico (rojo, verde y azul) para avanzar al siguiente reto. La segunda prueba requiere pulsar un botón un número exacto de veces (tres veces); dicho botón está fijado en una de las paredes. Finalmente, el tercer desafío implica resolver un enigma para encontrar una llave que se halla en un cajón de un mueble. Una vez obtenida la llave, el jugador podrá hacer clic en el pomo de la puerta y salir del escape room.
 
 Además, una mosca estará siempre sobrevolando la habitación, siguiendo una trayectoria predefinida por un spline.
 
